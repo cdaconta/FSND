@@ -12,6 +12,7 @@ import logging
 from logging import Formatter, FileHandler
 from flask_wtf import Form
 from forms import *
+from flask_migrate import Migrate
 #----------------------------------------------------------------------------#
 # App Config.
 #----------------------------------------------------------------------------#
@@ -22,7 +23,7 @@ app.config.from_object('config')
 db = SQLAlchemy(app)
 
 # TODO: connect to a local postgresql database
-
+migrate = Migrate(app, db)
 #----------------------------------------------------------------------------#
 # Models.
 #----------------------------------------------------------------------------#
@@ -56,6 +57,31 @@ class Artist(db.Model):
     # TODO: implement any missing fields, as a database migration using Flask-Migrate
 
 # TODO Implement Show and Artist models, and complete all model relationships and properties, as a database migration.
+class Shows(db.Model):
+  id = db.Column(db.Integer, primary_key=True)
+  venue_id = db.Column(db.Integer)
+  venue_name = db.Column(db.String())
+  artist_id = db.Column(db.Integer)
+  artist_name = db.Column(db.String())
+  artist_image_link = db.Column(db.String(500))
+  start_time = db.Column(db.DateTime)
+
+
+class Artist(db.Model):
+  id = db.Column(db.Integer, primary_key=True)
+  name = db.Column(db.String())
+  city = db.Column(db.String(120))
+  state = db.Column(db.String(120))
+  phone = db.Column(db.String(120))
+  website = db.Column(db.String(120))
+  facebook_link = db.Column(db.String(120))
+  seeking_venue = db.Column(db.Boolean)
+  seeking_description = db.Column(db.String(500))
+  image_link = db.Column(db.String(500))
+
+
+
+  
 
 #----------------------------------------------------------------------------#
 # Filters.
