@@ -27,12 +27,12 @@ migrate = Migrate(app, db)
 #----------------------------------------------------------------------------#
 # Models.
 #----------------------------------------------------------------------------#
-class Venues(db.Model):
-  __tablename__='Venues'
+class VenuesList(db.Model):
+  __tablename__='VenuesList'
   id = db.Column(db.Integer, primary_key=True)
   city = db.Column(db.String(100))
   state = db.Column(db.String(50))
-  children = db.relationship("Venue", backref="venue_parent", lazy="select", cascade='all, delete-orphan')
+  children = db.relationship('Venue', backref='venues_list', lazy='select', cascade='all, delete-orphan')
 
 
 class Venue(db.Model):
@@ -52,26 +52,41 @@ class Venue(db.Model):
     image_link = db.Column(db.String(500))
     past_shows = db.relationship("PastShows", backref="venue", lazy="select", cascade='all, delete-orphan')
     upcoming_shows = db.relationship("UpcomingShows", backref="venue", lazy="select", cascade='all, delete-orphan')
-    venues_id = db.Column(db.Integer, db.ForeignKey('Venues.id'), nullable=False)
+    venuelist_id = db.Column(db.Integer, db.ForeignKey('VenuesList.id'), nullable=False)
 
     # TODO: implement any missing fields, as a database migration using Flask-Migrate
 class PastShows(db.Model):
-  pass
+  __tablename__='PastShows'
+  id = db.Column(db.Integer, primary_key=True)
 
-# "artist_id": 4,
- #     "artist_name": "Guns N Petals",
+  artist_id = db.Column(db.Integer, db.ForeignKey('Artist.id'), nullable=False)
+ #     #"artist_name": "Guns N Petals",
   #    "artist_image_link": "https://images.unsplash.com/photo-1549213783-8284d0336c4f?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=300&q=80",
    #   "start_time": "2019-05-21T21:30:00.000Z"
+  artist_name = db.Column(db.String(50))
+  artist_image_link = db.Column(db.String(100))
+  start_time = db.Column(db.DateTime)
 
 class UpcomingShows(db.Model):
-  pass
-#same as past shows
+  __tablename__='UpcomingShows'
+  id = db.Column(db.Integer, primary_key=True)
+  artist_id = db.Column(db.Integer, db.ForeignKey('Artist.id'), nullable=False)
+ #     #"artist_name": "Guns N Petals",
+  #    "artist_image_link": "https://images.unsplash.com/photo-1549213783-8284d0336c4f?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=300&q=80",
+   #   "start_time": "2019-05-21T21:30:00.000Z"
+  artist_name = db.Column(db.String(50))
+  artist_image_link = db.Column(db.String(100))
+  start_time = db.Column(db.DateTime)
 
-class Artists(db.Model):
-  pass
-#id
+class ArtistsList(db.Model):
+  __tablename__=ArtistsList
+  id = db.Column(db.Integer, primary_key=True)
+  artist_id = db.Column(db.Integer, db.ForeignKey('Artist.id'), nullable=False)
 #name
 #children
+name = db.Column(db.String(50))
+children = db.relationship('Artist', backref='artists_list', lazy='select', cascade='all, delete-orphan')
+# ForeignKeyConstraint(['invoice_id', 'ref_num'], ['invoice.invoice_id', 'invoice.ref_num'])
 
 class Artist(db.Model):
     __tablename__ = 'Artist'
