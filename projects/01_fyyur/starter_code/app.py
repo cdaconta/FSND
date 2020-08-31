@@ -27,20 +27,51 @@ migrate = Migrate(app, db)
 #----------------------------------------------------------------------------#
 # Models.
 #----------------------------------------------------------------------------#
+class Venues(db.Model):
+  __tablename__='Venues'
+  id = db.Column(db.Integer, primary_key=True)
+  city = db.Column(db.String(100))
+  state = db.Column(db.String(50))
+  children = db.relationship("Venue", backref="venue_parent", lazy="select", cascade='all, delete-orphan')
+
 
 class Venue(db.Model):
     __tablename__ = 'Venue'
 
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String)
-    city = db.Column(db.String(120))
-    state = db.Column(db.String(120))
+    name = db.Column(db.String())
+    genres = db.Column(db.String())
     address = db.Column(db.String(120))
+    city = db.Column(db.String(120))
+    state = db.Column(db.String(120))  
     phone = db.Column(db.String(120))
-    image_link = db.Column(db.String(500))
+    website = db.Column(db.String(120))
     facebook_link = db.Column(db.String(120))
+    seeking_talent = db.Column(db.Boolean)
+    seeking_description = db.Column(db.String())
+    image_link = db.Column(db.String(500))
+    past_shows = db.relationship("PastShows", backref="venue", lazy="select", cascade='all, delete-orphan')
+    upcoming_shows = db.relationship("UpcomingShows", backref="venue", lazy="select", cascade='all, delete-orphan')
+    venues_id = db.Column(db.Integer, db.ForeignKey('Venues.id'), nullable=False)
 
     # TODO: implement any missing fields, as a database migration using Flask-Migrate
+class PastShows(db.Model):
+  pass
+
+# "artist_id": 4,
+ #     "artist_name": "Guns N Petals",
+  #    "artist_image_link": "https://images.unsplash.com/photo-1549213783-8284d0336c4f?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=300&q=80",
+   #   "start_time": "2019-05-21T21:30:00.000Z"
+
+class UpcomingShows(db.Model):
+  pass
+#same as past shows
+
+class Artists(db.Model):
+  pass
+#id
+#name
+#children
 
 class Artist(db.Model):
     __tablename__ = 'Artist'
@@ -53,11 +84,15 @@ class Artist(db.Model):
     genres = db.Column(db.String(120))
     image_link = db.Column(db.String(500))
     facebook_link = db.Column(db.String(120))
+    num_upcoming_shows = db.Column(db.Integer)
+#--------------------------------------------------------------------------------------------------------------------------
 
     # TODO: implement any missing fields, as a database migration using Flask-Migrate
 
 # TODO Implement Show and Artist models, and complete all model relationships and properties, as a database migration.
 class Shows(db.Model):
+  __tablename__ = 'Shows'
+
   id = db.Column(db.Integer, primary_key=True)
   venue_id = db.Column(db.Integer)
   venue_name = db.Column(db.String())
@@ -67,17 +102,7 @@ class Shows(db.Model):
   start_time = db.Column(db.DateTime)
 
 
-class Artist(db.Model):
-  id = db.Column(db.Integer, primary_key=True)
-  name = db.Column(db.String())
-  city = db.Column(db.String(120))
-  state = db.Column(db.String(120))
-  phone = db.Column(db.String(120))
-  website = db.Column(db.String(120))
-  facebook_link = db.Column(db.String(120))
-  seeking_venue = db.Column(db.Boolean)
-  seeking_description = db.Column(db.String(500))
-  image_link = db.Column(db.String(500))
+
 
 
 
