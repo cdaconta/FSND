@@ -50,9 +50,10 @@ class Venue(db.Model):
     seeking_talent = db.Column(db.Boolean)
     seeking_description = db.Column(db.String())
     image_link = db.Column(db.String(500))
-    past_shows = db.relationship("PastShows", backref="venue", lazy="select", cascade='all, delete-orphan')
-    upcoming_shows = db.relationship("UpcomingShows", backref="venue", lazy="select", cascade='all, delete-orphan')
+  #  past_shows = db.relationship("PastShows", backref="venue", lazy="select", cascade='all, delete-orphan')
+   # upcoming_shows = db.relationship("UpcomingShows", backref="venue", lazy="select", cascade='all, delete-orphan')
     venuelist_id = db.Column(db.Integer, db.ForeignKey('VenuesList.id'), nullable=False)
+    shows = db.relationship('Shows', backref='venue', lazy='select', cascade='all, delete-orphan')
 
     # TODO: implement any missing fields, as a database migration using Flask-Migrate
 class PastShows(db.Model):
@@ -79,13 +80,13 @@ class UpcomingShows(db.Model):
   start_time = db.Column(db.DateTime)
 
 class ArtistsList(db.Model):
-  __tablename__=ArtistsList
+  __tablename__='ArtistsList'
   id = db.Column(db.Integer, primary_key=True)
   artist_id = db.Column(db.Integer, db.ForeignKey('Artist.id'), nullable=False)
 #name
 #children
-name = db.Column(db.String(50))
-children = db.relationship('Artist', backref='artists_list', lazy='select', cascade='all, delete-orphan')
+ # name = db.Column(db.String(50)) // get from query
+  children = db.relationship('Artist', backref='artists_list', lazy='select', cascade='all, delete-orphan')
 # ForeignKeyConstraint(['invoice_id', 'ref_num'], ['invoice.invoice_id', 'invoice.ref_num'])
 
 class Artist(db.Model):
@@ -93,13 +94,16 @@ class Artist(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String)
+    genres = db.Column(db.String(120))
     city = db.Column(db.String(120))
     state = db.Column(db.String(120))
     phone = db.Column(db.String(120))
-    genres = db.Column(db.String(120))
-    image_link = db.Column(db.String(500))
+    website = db.Column(db.String(120))
     facebook_link = db.Column(db.String(120))
-    num_upcoming_shows = db.Column(db.Integer)
+    seeking_venue = db.Column(db.Boolean)
+    seeking_description = db.Column(db.String())
+    image_link = db.Column(db.String(500))
+    shows = db.relationship('Shows', backref='artist', lazy='select', cascade='all, delete-orphan')
 #--------------------------------------------------------------------------------------------------------------------------
 
     # TODO: implement any missing fields, as a database migration using Flask-Migrate
@@ -109,11 +113,11 @@ class Shows(db.Model):
   __tablename__ = 'Shows'
 
   id = db.Column(db.Integer, primary_key=True)
-  venue_id = db.Column(db.Integer)
-  venue_name = db.Column(db.String())
-  artist_id = db.Column(db.Integer)
-  artist_name = db.Column(db.String())
-  artist_image_link = db.Column(db.String(500))
+  venue_id = db.Column(db.Integer, db.ForeignKey('Venue.id'), nullable=False)
+ # venue_name = db.Column(db.String())  //this is query
+  artist_id = db.Column(db.Integer, db.ForeignKey('Artist.id'), nullable=False)
+ # artist_name = db.Column(db.String())
+  #artist_image_link = db.Column(db.String(500))
   start_time = db.Column(db.DateTime)
 
 
