@@ -27,12 +27,12 @@ migrate = Migrate(app, db)
 #----------------------------------------------------------------------------#
 # Models.
 #----------------------------------------------------------------------------#
-class VenuesList(db.Model):
-  __tablename__='VenuesList'
-  id = db.Column(db.Integer, primary_key=True)
-  city = db.Column(db.String(100))
-  state = db.Column(db.String(50))
-  venueChildren = db.relationship('Venue', backref='venues_list', lazy='select', cascade='all, delete-orphan')
+#class VenuesList(db.Model):
+ # __tablename__='VenuesList'
+ # id = db.Column(db.Integer, primary_key=True)
+ # city = db.Column(db.String(100))
+ # state = db.Column(db.String(50))
+ # venueChildren = db.relationship('Venue', backref='venues_list', lazy='select', cascade='all, delete-orphan')
 
 
 class Venue(db.Model):
@@ -52,21 +52,21 @@ class Venue(db.Model):
     image_link = db.Column(db.String(500))
   #  past_shows = db.relationship("PastShows", backref="venue", lazy="select", cascade='all, delete-orphan')
    # upcoming_shows = db.relationship("UpcomingShows", backref="venue", lazy="select", cascade='all, delete-orphan')
-    venuelist_id = db.Column(db.Integer, db.ForeignKey('VenuesList.id'), nullable=False)
+   # venuelist_id = db.Column(db.Integer, db.ForeignKey('VenuesList.id'), nullable=False)
     shows = db.relationship('Shows', backref='venue', lazy='select', cascade='all, delete-orphan')
 
     # TODO: implement any missing fields, as a database migration using Flask-Migrate
 
 
 
-class ArtistsList(db.Model):
-  __tablename__='ArtistsList'
-  id = db.Column(db.Integer, primary_key=True)
-  artist_id = db.Column(db.Integer, db.ForeignKey('Artist.id'), nullable=False)
+#class ArtistsList(db.Model):
+ # __tablename__='ArtistsList'
+  #id = db.Column(db.Integer, primary_key=True)
+  #artist_id = db.Column(db.Integer, db.ForeignKey('Artist.id'), nullable=False)
 #name
 #children
  # name = db.Column(db.String(50)) // get from query
-  artistChildren = db.relationship('Artist', backref='artists_list', lazy='select', cascade='all, delete-orphan')
+  #artistChildren = db.relationship('Artist', backref='artists_list', lazy='select', cascade='all, delete-orphan')
 # ForeignKeyConstraint(['invoice_id', 'ref_num'], ['invoice.invoice_id', 'invoice.ref_num'])
 
 class Artist(db.Model):
@@ -137,6 +137,8 @@ def index():
 def venues():
   # TODO: replace with real venues data.
   #       num_shows should be aggregated based on number of upcoming shows per venue.
+  #venue_list = VenuesList.query.all()
+  
   data=[{
     "city": "San Francisco",
     "state": "CA",
@@ -157,8 +159,8 @@ def venues():
       "name": "The Dueling Pianos Bar",
       "num_upcoming_shows": 0,
     }]
-  }]
-  return render_template('pages/venues.html', areas=data);
+  }]   #was venue_list
+  return render_template('pages/venues.html', areas=Data);
 
 @app.route('/venues/search', methods=['POST'])
 def search_venues():
