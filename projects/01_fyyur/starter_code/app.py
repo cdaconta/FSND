@@ -36,7 +36,7 @@ migrate = Migrate(app, db)
 
 
 class Venue(db.Model):
-    __tablename__ = 'Venue'
+    __tablename__ = "venue"
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String())
@@ -45,7 +45,7 @@ class Venue(db.Model):
     city = db.Column(db.String(120))
     state = db.Column(db.String(120))  
     phone = db.Column(db.String(120))
-    website = db.Column(db.String(120))
+    website = db.Column(db.String())
     facebook_link = db.Column(db.String(120))
     seeking_talent = db.Column(db.Boolean)
     seeking_description = db.Column(db.String())
@@ -70,32 +70,31 @@ class Venue(db.Model):
 # ForeignKeyConstraint(['invoice_id', 'ref_num'], ['invoice.invoice_id', 'invoice.ref_num'])
 
 class Artist(db.Model):
-    __tablename__ = 'Artist'
-
+    __tablename__ = "artist"
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String)
+    name = db.Column(db.String())
     genres = db.Column(db.String(120))
     city = db.Column(db.String(120))
     state = db.Column(db.String(120))
     phone = db.Column(db.String(120))
-    website = db.Column(db.String(120))
+    website = db.Column(db.String())
     facebook_link = db.Column(db.String(120))
     seeking_venue = db.Column(db.Boolean)
     seeking_description = db.Column(db.String())
     image_link = db.Column(db.String(500))
-    shows = db.relationship('Shows', backref='artist', lazy='select', cascade='all, delete-orphan')
+    shows = db.relationship('shows', backref='artist', lazy='select', cascade='all, delete-orphan')
 #--------------------------------------------------------------------------------------------------------------------------
 
     # TODO: implement any missing fields, as a database migration using Flask-Migrate
 
 # TODO Implement Show and Artist models, and complete all model relationships and properties, as a database migration.
 class Shows(db.Model):
-  __tablename__ = 'Shows'
+  __tablename__ = "shows"
 
   id = db.Column(db.Integer, primary_key=True)
-  venue_id = db.Column(db.Integer, db.ForeignKey('Venue.id'), nullable=False)
+  venue_id = db.Column(db.Integer, db.ForeignKey('venue.id'), nullable=False)
  # venue_name = db.Column(db.String())  //this is query
-  artist_id = db.Column(db.Integer, db.ForeignKey('Artist.id'), nullable=False)
+  artist_id = db.Column(db.Integer, db.ForeignKey('artist.id'), nullable=False)
  # artist_name = db.Column(db.String())
   #artist_image_link = db.Column(db.String(500))
   start_time = db.Column(db.DateTime)
