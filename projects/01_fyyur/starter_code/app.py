@@ -13,6 +13,7 @@ from logging import Formatter, FileHandler
 from flask_wtf import Form
 from forms import *
 from flask_migrate import Migrate
+import logging
 #----------------------------------------------------------------------------#
 # App Config.
 #----------------------------------------------------------------------------#
@@ -44,7 +45,7 @@ class Venue(db.Model):
     seeking_talent = db.Column(db.Boolean)
     seeking_description = db.Column(db.String(500))
     image_link = db.Column(db.String(500))
-    shows = db.relationship('shows', backref='venue', lazy='True', cascade='all, delete-orphan')
+    shows = db.relationship('Shows', backref='venue', lazy='select', cascade='all, delete-orphan')
 
     def __repr__(self):
         return '<Venue {}>'.format(self.name)
@@ -66,7 +67,7 @@ class Artist(db.Model):
     seeking_venue = db.Column(db.Boolean)
     seeking_description = db.Column(db.String(500))
     image_link = db.Column(db.String(500))
-    shows = db.relationship('shows', backref='artist', lazy='select', cascade='all, delete-orphan')
+    shows = db.relationship('Shows', backref='artist', lazy='select', cascade='all, delete-orphan')
     
     def __repr__(self):
         return '<Artist {}>'.format(self.name)
@@ -117,6 +118,84 @@ def venues():
   # TODO: replace with real venues data.
   #       num_shows should be aggregated based on number of upcoming shows per venue.
   #venue_list = VenuesList.query.all()
+  Data = []
+  
+  #venue_locations = set()
+
+  all_venue = Venue.query.all()
+  
+  venue_state_list = Venue.query.with_entities(Venue.state, Venue.city).group_by(Venue.state, Venue.city).order_by(Venue.state).all()
+
+  for item in venue_state_list:
+    Data.append({
+      "city": item[1],
+      "state": item[0], 
+      "venues": [],
+    })
+  #this was item - for item in venue_state_list
+  for venue in all_venue:
+    #logging.error(f'This is item {item[0]} and {item[1]}')
+   # for venue in all_venue:
+      
+      #if venue.state == item[0] and venue.city == item[1]:
+        
+        upcoming_count = 0;
+
+        shows = Shows.query.filter_by(venue_id=venue.id).all()
+        
+        todays_date = datetime.now()
+
+        for show in shows:
+          if show.start_time > todays_date:
+            upcoming_count += 1
+
+        for location in Data:
+          if venue.state == location['state'] and venue.city == location['city']:
+            location['venues'].append({
+            "id": venue.id,
+            "name": venue.name,
+            "num_upcoming_shows": upcoming_count
+            })
+        """
+        #logging.error(f'state:{venue.state}  city: {venue.city} id: {venue.id} name: {venue.name} upcoming {upcoming_count}')
+        #logging.error(f'This is item {type(item[0])} and venue state {type(venue.state)} , city {item[1]} and venue city {venue.city}')
+
+        #for info in Data:
+         # logging.error(f'this is info {info[0]}')
+         if info['city'] == venue.city and info['state'] == venue.state:
+            info['venues'].append({
+            "id": venue.id,
+            "name": venue.name, 
+            "num_upcoming_shows": upcoming_count,
+            })
+        else: 
+        #just add all to city states up front then append venues
+        if venue_count > 0:
+          for place in Data:
+            if place['city'] == venue.city:
+              place['venues'].append({          
+            "id": venue.id,
+            "name": venue.name, 
+            "num_upcoming_shows": upcoming_count,                   
+              })
+        else: 
+          Data.append({
+            "city": venue.city,
+            "state": venue.state, 
+            "venues": {
+            "id": venue.id,
+            "name": venue.name, 
+            "num_upcoming_shows": upcoming_count,
+                      }
+            })
+
+        venue_count +=1;
+   for info in Data:
+    logging.error(f'Data - {info[0]}') """ """
+
+
+    
+
   
   data=[{
     "city": "San Francisco",
@@ -138,7 +217,7 @@ def venues():
       "name": "The Dueling Pianos Bar",
       "num_upcoming_shows": 0,
     }]
-  }]   #was venue_list
+  }]   """ #was venue_list
   return render_template('pages/venues.html', areas=Data);
 
 @app.route('/venues/search', methods=['POST'])
