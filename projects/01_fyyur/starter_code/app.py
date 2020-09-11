@@ -110,7 +110,6 @@ class Artist(db.Model):
     
     def __repr__(self):
         return '<Artist {}>'.format(self.name)
-#-------------------------------------------------------------------------
 
     # TODO: implement any missing fields, as a database migration using Flask-Migrate
 
@@ -534,13 +533,11 @@ def create_show_submission():
 
   try:
     form = ShowForm()
-
-    logging.error(f'This is show start_time = {type(request.form["start_time"])}')
     
     form_show = Shows(
-    artist_id = request.form['artist_id'],
-    venue_id = request.form['venue_id'],
-    start_time = request.form['start_time']
+    artist_id = form.artist_id.data,
+    venue_id = form.venue_id.data,
+    start_time = form.start_time.data  #--------------------------we need to validate inputs--------------------
     )
 
     db.session.add(form_show)
