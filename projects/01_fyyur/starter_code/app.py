@@ -501,12 +501,8 @@ def create_artist_submission():
 
 @app.route('/shows')
 def shows():
-  # displays list of shows at /shows
-  # TODO: replace with real venues data.
-  #       num_shows should be aggregated based on number of upcoming shows per venue.
   shows = Shows.query.all()
   data = []
-
 
   for item in shows:
     data.append({
@@ -528,8 +524,6 @@ def create_shows():
 
 @app.route('/shows/create', methods=['POST'])
 def create_show_submission():
-  # called to create new shows in the db, upon submitting new show listing form
-  # TODO: insert form data as a new Show record in the db, instead
 
   try:
     form = ShowForm()
@@ -537,7 +531,7 @@ def create_show_submission():
     form_show = Shows(
     artist_id = form.artist_id.data,
     venue_id = form.venue_id.data,
-    start_time = form.start_time.data  #--------------------------we need to validate inputs--------------------
+    start_time = form.start_time.data  
     )
 
     db.session.add(form_show)

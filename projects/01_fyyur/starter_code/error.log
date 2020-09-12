@@ -1,1 +1,391 @@
 
+2020-09-11 19:00:32,627 INFO: errors [in C:\Users\dacon\Documents\Github\FSND\projects\01_fyyur\starter_code\app.py:413]
+2020-09-11 19:49:32,598 ERROR: Exception on /shows [GET] [in C:\Users\dacon\AppData\Local\Programs\Python\Python38-32\lib\site-packages\flask\app.py:1891]
+Traceback (most recent call last):
+  File "C:\Users\dacon\AppData\Local\Programs\Python\Python38-32\lib\site-packages\sqlalchemy\engine\base.py", line 1277, in _execute_context
+    self.dialect.do_execute(
+  File "C:\Users\dacon\AppData\Local\Programs\Python\Python38-32\lib\site-packages\sqlalchemy\engine\default.py", line 593, in do_execute
+    cursor.execute(statement, parameters)
+sqlite3.OperationalError: no such table: shows
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\dacon\AppData\Local\Programs\Python\Python38-32\lib\site-packages\flask\app.py", line 2447, in wsgi_app
+    response = self.full_dispatch_request()
+  File "C:\Users\dacon\AppData\Local\Programs\Python\Python38-32\lib\site-packages\flask\app.py", line 1952, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "C:\Users\dacon\AppData\Local\Programs\Python\Python38-32\lib\site-packages\flask\app.py", line 1821, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "C:\Users\dacon\AppData\Local\Programs\Python\Python38-32\lib\site-packages\flask\_compat.py", line 39, in reraise
+    raise value
+  File "C:\Users\dacon\AppData\Local\Programs\Python\Python38-32\lib\site-packages\flask\app.py", line 1950, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "C:\Users\dacon\AppData\Local\Programs\Python\Python38-32\lib\site-packages\flask\app.py", line 1936, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "C:\Users\dacon\Documents\Github\FSND\projects\01_fyyur\starter_code\app.py", line 352, in shows
+    data = []
+  File "C:\Users\dacon\AppData\Local\Programs\Python\Python38-32\lib\site-packages\sqlalchemy\orm\query.py", line 3341, in all
+    return list(self)
+  File "C:\Users\dacon\AppData\Local\Programs\Python\Python38-32\lib\site-packages\sqlalchemy\orm\query.py", line 3503, in __iter__
+    return self._execute_and_instances(context)
+  File "C:\Users\dacon\AppData\Local\Programs\Python\Python38-32\lib\site-packages\sqlalchemy\orm\query.py", line 3528, in _execute_and_instances
+    result = conn.execute(querycontext.statement, self._params)
+  File "C:\Users\dacon\AppData\Local\Programs\Python\Python38-32\lib\site-packages\sqlalchemy\engine\base.py", line 1014, in execute
+    return meth(self, multiparams, params)
+  File "C:\Users\dacon\AppData\Local\Programs\Python\Python38-32\lib\site-packages\sqlalchemy\sql\elements.py", line 298, in _execute_on_connection
+    return connection._execute_clauseelement(self, multiparams, params)
+  File "C:\Users\dacon\AppData\Local\Programs\Python\Python38-32\lib\site-packages\sqlalchemy\engine\base.py", line 1127, in _execute_clauseelement
+    ret = self._execute_context(
+  File "C:\Users\dacon\AppData\Local\Programs\Python\Python38-32\lib\site-packages\sqlalchemy\engine\base.py", line 1317, in _execute_context
+    self._handle_dbapi_exception(
+  File "C:\Users\dacon\AppData\Local\Programs\Python\Python38-32\lib\site-packages\sqlalchemy\engine\base.py", line 1511, in _handle_dbapi_exception
+    util.raise_(
+  File "C:\Users\dacon\AppData\Local\Programs\Python\Python38-32\lib\site-packages\sqlalchemy\util\compat.py", line 178, in raise_
+    raise exception
+  File "C:\Users\dacon\AppData\Local\Programs\Python\Python38-32\lib\site-packages\sqlalchemy\engine\base.py", line 1277, in _execute_context
+    self.dialect.do_execute(
+  File "C:\Users\dacon\AppData\Local\Programs\Python\Python38-32\lib\site-packages\sqlalchemy\engine\default.py", line 593, in do_execute
+    cursor.execute(statement, parameters)
+sqlalchemy.exc.OperationalError: (sqlite3.OperationalError) no such table: shows
+[SQL: SELECT shows.id AS shows_id, shows.venue_id AS shows_venue_id, shows.artist_id AS shows_artist_id, shows.start_time AS shows_start_time 
+FROM shows]
+(Background on this error at: http://sqlalche.me/e/13/e3q8)
+2020-09-11 19:50:23,113 ERROR: Exception on /shows [GET] [in C:\Users\dacon\AppData\Local\Programs\Python\Python38-32\lib\site-packages\flask\app.py:1891]
+Traceback (most recent call last):
+  File "C:\Users\dacon\AppData\Local\Programs\Python\Python38-32\lib\site-packages\sqlalchemy\engine\base.py", line 1277, in _execute_context
+    self.dialect.do_execute(
+  File "C:\Users\dacon\AppData\Local\Programs\Python\Python38-32\lib\site-packages\sqlalchemy\engine\default.py", line 593, in do_execute
+    cursor.execute(statement, parameters)
+sqlite3.OperationalError: no such table: shows
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\dacon\AppData\Local\Programs\Python\Python38-32\lib\site-packages\flask\app.py", line 2447, in wsgi_app
+    response = self.full_dispatch_request()
+  File "C:\Users\dacon\AppData\Local\Programs\Python\Python38-32\lib\site-packages\flask\app.py", line 1952, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "C:\Users\dacon\AppData\Local\Programs\Python\Python38-32\lib\site-packages\flask\app.py", line 1821, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "C:\Users\dacon\AppData\Local\Programs\Python\Python38-32\lib\site-packages\flask\_compat.py", line 39, in reraise
+    raise value
+  File "C:\Users\dacon\AppData\Local\Programs\Python\Python38-32\lib\site-packages\flask\app.py", line 1950, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "C:\Users\dacon\AppData\Local\Programs\Python\Python38-32\lib\site-packages\flask\app.py", line 1936, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "C:\Users\dacon\Documents\Github\FSND\projects\01_fyyur\starter_code\app.py", line 352, in shows
+    data = []
+  File "C:\Users\dacon\AppData\Local\Programs\Python\Python38-32\lib\site-packages\sqlalchemy\orm\query.py", line 3341, in all
+    return list(self)
+  File "C:\Users\dacon\AppData\Local\Programs\Python\Python38-32\lib\site-packages\sqlalchemy\orm\query.py", line 3503, in __iter__
+    return self._execute_and_instances(context)
+  File "C:\Users\dacon\AppData\Local\Programs\Python\Python38-32\lib\site-packages\sqlalchemy\orm\query.py", line 3528, in _execute_and_instances
+    result = conn.execute(querycontext.statement, self._params)
+  File "C:\Users\dacon\AppData\Local\Programs\Python\Python38-32\lib\site-packages\sqlalchemy\engine\base.py", line 1014, in execute
+    return meth(self, multiparams, params)
+  File "C:\Users\dacon\AppData\Local\Programs\Python\Python38-32\lib\site-packages\sqlalchemy\sql\elements.py", line 298, in _execute_on_connection
+    return connection._execute_clauseelement(self, multiparams, params)
+  File "C:\Users\dacon\AppData\Local\Programs\Python\Python38-32\lib\site-packages\sqlalchemy\engine\base.py", line 1127, in _execute_clauseelement
+    ret = self._execute_context(
+  File "C:\Users\dacon\AppData\Local\Programs\Python\Python38-32\lib\site-packages\sqlalchemy\engine\base.py", line 1317, in _execute_context
+    self._handle_dbapi_exception(
+  File "C:\Users\dacon\AppData\Local\Programs\Python\Python38-32\lib\site-packages\sqlalchemy\engine\base.py", line 1511, in _handle_dbapi_exception
+    util.raise_(
+  File "C:\Users\dacon\AppData\Local\Programs\Python\Python38-32\lib\site-packages\sqlalchemy\util\compat.py", line 178, in raise_
+    raise exception
+  File "C:\Users\dacon\AppData\Local\Programs\Python\Python38-32\lib\site-packages\sqlalchemy\engine\base.py", line 1277, in _execute_context
+    self.dialect.do_execute(
+  File "C:\Users\dacon\AppData\Local\Programs\Python\Python38-32\lib\site-packages\sqlalchemy\engine\default.py", line 593, in do_execute
+    cursor.execute(statement, parameters)
+sqlalchemy.exc.OperationalError: (sqlite3.OperationalError) no such table: shows
+[SQL: SELECT shows.id AS shows_id, shows.venue_id AS shows_venue_id, shows.artist_id AS shows_artist_id, shows.start_time AS shows_start_time 
+FROM shows]
+(Background on this error at: http://sqlalche.me/e/13/e3q8)
+2020-09-11 19:50:45,922 ERROR: Exception on /venues [GET] [in C:\Users\dacon\AppData\Local\Programs\Python\Python38-32\lib\site-packages\flask\app.py:1891]
+Traceback (most recent call last):
+  File "C:\Users\dacon\AppData\Local\Programs\Python\Python38-32\lib\site-packages\sqlalchemy\engine\base.py", line 1277, in _execute_context
+    self.dialect.do_execute(
+  File "C:\Users\dacon\AppData\Local\Programs\Python\Python38-32\lib\site-packages\sqlalchemy\engine\default.py", line 593, in do_execute
+    cursor.execute(statement, parameters)
+sqlite3.OperationalError: no such table: venue
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\dacon\AppData\Local\Programs\Python\Python38-32\lib\site-packages\flask\app.py", line 2447, in wsgi_app
+    response = self.full_dispatch_request()
+  File "C:\Users\dacon\AppData\Local\Programs\Python\Python38-32\lib\site-packages\flask\app.py", line 1952, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "C:\Users\dacon\AppData\Local\Programs\Python\Python38-32\lib\site-packages\flask\app.py", line 1821, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "C:\Users\dacon\AppData\Local\Programs\Python\Python38-32\lib\site-packages\flask\_compat.py", line 39, in reraise
+    raise value
+  File "C:\Users\dacon\AppData\Local\Programs\Python\Python38-32\lib\site-packages\flask\app.py", line 1950, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "C:\Users\dacon\AppData\Local\Programs\Python\Python38-32\lib\site-packages\flask\app.py", line 1936, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "C:\Users\dacon\Documents\Github\FSND\projects\01_fyyur\starter_code\app.py", line 47, in venues
+  File "C:\Users\dacon\AppData\Local\Programs\Python\Python38-32\lib\site-packages\sqlalchemy\orm\query.py", line 3341, in all
+    return list(self)
+  File "C:\Users\dacon\AppData\Local\Programs\Python\Python38-32\lib\site-packages\sqlalchemy\orm\query.py", line 3503, in __iter__
+    return self._execute_and_instances(context)
+  File "C:\Users\dacon\AppData\Local\Programs\Python\Python38-32\lib\site-packages\sqlalchemy\orm\query.py", line 3528, in _execute_and_instances
+    result = conn.execute(querycontext.statement, self._params)
+  File "C:\Users\dacon\AppData\Local\Programs\Python\Python38-32\lib\site-packages\sqlalchemy\engine\base.py", line 1014, in execute
+    return meth(self, multiparams, params)
+  File "C:\Users\dacon\AppData\Local\Programs\Python\Python38-32\lib\site-packages\sqlalchemy\sql\elements.py", line 298, in _execute_on_connection
+    return connection._execute_clauseelement(self, multiparams, params)
+  File "C:\Users\dacon\AppData\Local\Programs\Python\Python38-32\lib\site-packages\sqlalchemy\engine\base.py", line 1127, in _execute_clauseelement
+    ret = self._execute_context(
+  File "C:\Users\dacon\AppData\Local\Programs\Python\Python38-32\lib\site-packages\sqlalchemy\engine\base.py", line 1317, in _execute_context
+    self._handle_dbapi_exception(
+  File "C:\Users\dacon\AppData\Local\Programs\Python\Python38-32\lib\site-packages\sqlalchemy\engine\base.py", line 1511, in _handle_dbapi_exception
+    util.raise_(
+  File "C:\Users\dacon\AppData\Local\Programs\Python\Python38-32\lib\site-packages\sqlalchemy\util\compat.py", line 178, in raise_
+    raise exception
+  File "C:\Users\dacon\AppData\Local\Programs\Python\Python38-32\lib\site-packages\sqlalchemy\engine\base.py", line 1277, in _execute_context
+    self.dialect.do_execute(
+  File "C:\Users\dacon\AppData\Local\Programs\Python\Python38-32\lib\site-packages\sqlalchemy\engine\default.py", line 593, in do_execute
+    cursor.execute(statement, parameters)
+sqlalchemy.exc.OperationalError: (sqlite3.OperationalError) no such table: venue
+[SQL: SELECT venue.id AS venue_id, venue.name AS venue_name, venue.genres AS venue_genres, venue.address AS venue_address, venue.city AS venue_city, venue.state AS venue_state, venue.phone AS venue_phone, venue.website AS venue_website, venue.facebook_link AS venue_facebook_link, venue.seeking_talent AS venue_seeking_talent, venue.seeking_description AS venue_seeking_description, venue.image_link AS venue_image_link 
+FROM venue]
+(Background on this error at: http://sqlalche.me/e/13/e3q8)
+2020-09-11 19:56:41,544 ERROR: Exception on /venues [GET] [in C:\Users\dacon\AppData\Local\Programs\Python\Python38-32\lib\site-packages\flask\app.py:1891]
+Traceback (most recent call last):
+  File "C:\Users\dacon\AppData\Local\Programs\Python\Python38-32\lib\site-packages\sqlalchemy\engine\base.py", line 1277, in _execute_context
+    self.dialect.do_execute(
+  File "C:\Users\dacon\AppData\Local\Programs\Python\Python38-32\lib\site-packages\sqlalchemy\engine\default.py", line 593, in do_execute
+    cursor.execute(statement, parameters)
+sqlite3.OperationalError: no such table: venue
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\dacon\AppData\Local\Programs\Python\Python38-32\lib\site-packages\flask\app.py", line 2447, in wsgi_app
+    response = self.full_dispatch_request()
+  File "C:\Users\dacon\AppData\Local\Programs\Python\Python38-32\lib\site-packages\flask\app.py", line 1952, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "C:\Users\dacon\AppData\Local\Programs\Python\Python38-32\lib\site-packages\flask\app.py", line 1821, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "C:\Users\dacon\AppData\Local\Programs\Python\Python38-32\lib\site-packages\flask\_compat.py", line 39, in reraise
+    raise value
+  File "C:\Users\dacon\AppData\Local\Programs\Python\Python38-32\lib\site-packages\flask\app.py", line 1950, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "C:\Users\dacon\AppData\Local\Programs\Python\Python38-32\lib\site-packages\flask\app.py", line 1936, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "C:\Users\dacon\Documents\Github\FSND\projects\01_fyyur\starter_code\app.py", line 47, in venues
+    Data = []
+  File "C:\Users\dacon\AppData\Local\Programs\Python\Python38-32\lib\site-packages\sqlalchemy\orm\query.py", line 3341, in all
+    return list(self)
+  File "C:\Users\dacon\AppData\Local\Programs\Python\Python38-32\lib\site-packages\sqlalchemy\orm\query.py", line 3503, in __iter__
+    return self._execute_and_instances(context)
+  File "C:\Users\dacon\AppData\Local\Programs\Python\Python38-32\lib\site-packages\sqlalchemy\orm\query.py", line 3528, in _execute_and_instances
+    result = conn.execute(querycontext.statement, self._params)
+  File "C:\Users\dacon\AppData\Local\Programs\Python\Python38-32\lib\site-packages\sqlalchemy\engine\base.py", line 1014, in execute
+    return meth(self, multiparams, params)
+  File "C:\Users\dacon\AppData\Local\Programs\Python\Python38-32\lib\site-packages\sqlalchemy\sql\elements.py", line 298, in _execute_on_connection
+    return connection._execute_clauseelement(self, multiparams, params)
+  File "C:\Users\dacon\AppData\Local\Programs\Python\Python38-32\lib\site-packages\sqlalchemy\engine\base.py", line 1127, in _execute_clauseelement
+    ret = self._execute_context(
+  File "C:\Users\dacon\AppData\Local\Programs\Python\Python38-32\lib\site-packages\sqlalchemy\engine\base.py", line 1317, in _execute_context
+    self._handle_dbapi_exception(
+  File "C:\Users\dacon\AppData\Local\Programs\Python\Python38-32\lib\site-packages\sqlalchemy\engine\base.py", line 1511, in _handle_dbapi_exception
+    util.raise_(
+  File "C:\Users\dacon\AppData\Local\Programs\Python\Python38-32\lib\site-packages\sqlalchemy\util\compat.py", line 178, in raise_
+    raise exception
+  File "C:\Users\dacon\AppData\Local\Programs\Python\Python38-32\lib\site-packages\sqlalchemy\engine\base.py", line 1277, in _execute_context
+    self.dialect.do_execute(
+  File "C:\Users\dacon\AppData\Local\Programs\Python\Python38-32\lib\site-packages\sqlalchemy\engine\default.py", line 593, in do_execute
+    cursor.execute(statement, parameters)
+sqlalchemy.exc.OperationalError: (sqlite3.OperationalError) no such table: venue
+[SQL: SELECT venue.id AS venue_id, venue.name AS venue_name, venue.genres AS venue_genres, venue.address AS venue_address, venue.city AS venue_city, venue.state AS venue_state, venue.phone AS venue_phone, venue.website AS venue_website, venue.facebook_link AS venue_facebook_link, venue.seeking_talent AS venue_seeking_talent, venue.seeking_description AS venue_seeking_description, venue.image_link AS venue_image_link 
+FROM venue]
+(Background on this error at: http://sqlalche.me/e/13/e3q8)
+2020-09-11 19:56:44,856 ERROR: Exception on /artists [GET] [in C:\Users\dacon\AppData\Local\Programs\Python\Python38-32\lib\site-packages\flask\app.py:1891]
+Traceback (most recent call last):
+  File "C:\Users\dacon\AppData\Local\Programs\Python\Python38-32\lib\site-packages\sqlalchemy\engine\base.py", line 1277, in _execute_context
+    self.dialect.do_execute(
+  File "C:\Users\dacon\AppData\Local\Programs\Python\Python38-32\lib\site-packages\sqlalchemy\engine\default.py", line 593, in do_execute
+    cursor.execute(statement, parameters)
+sqlite3.OperationalError: no such table: artist
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\dacon\AppData\Local\Programs\Python\Python38-32\lib\site-packages\flask\app.py", line 2447, in wsgi_app
+    response = self.full_dispatch_request()
+  File "C:\Users\dacon\AppData\Local\Programs\Python\Python38-32\lib\site-packages\flask\app.py", line 1952, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "C:\Users\dacon\AppData\Local\Programs\Python\Python38-32\lib\site-packages\flask\app.py", line 1821, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "C:\Users\dacon\AppData\Local\Programs\Python\Python38-32\lib\site-packages\flask\_compat.py", line 39, in reraise
+    raise value
+  File "C:\Users\dacon\AppData\Local\Programs\Python\Python38-32\lib\site-packages\flask\app.py", line 1950, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "C:\Users\dacon\AppData\Local\Programs\Python\Python38-32\lib\site-packages\flask\app.py", line 1936, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "C:\Users\dacon\Documents\Github\FSND\projects\01_fyyur\starter_code\app.py", line 187, in artists
+    for item in artist_list:
+  File "C:\Users\dacon\AppData\Local\Programs\Python\Python38-32\lib\site-packages\sqlalchemy\orm\query.py", line 3503, in __iter__
+    return self._execute_and_instances(context)
+  File "C:\Users\dacon\AppData\Local\Programs\Python\Python38-32\lib\site-packages\sqlalchemy\orm\query.py", line 3528, in _execute_and_instances
+    result = conn.execute(querycontext.statement, self._params)
+  File "C:\Users\dacon\AppData\Local\Programs\Python\Python38-32\lib\site-packages\sqlalchemy\engine\base.py", line 1014, in execute
+    return meth(self, multiparams, params)
+  File "C:\Users\dacon\AppData\Local\Programs\Python\Python38-32\lib\site-packages\sqlalchemy\sql\elements.py", line 298, in _execute_on_connection
+    return connection._execute_clauseelement(self, multiparams, params)
+  File "C:\Users\dacon\AppData\Local\Programs\Python\Python38-32\lib\site-packages\sqlalchemy\engine\base.py", line 1127, in _execute_clauseelement
+    ret = self._execute_context(
+  File "C:\Users\dacon\AppData\Local\Programs\Python\Python38-32\lib\site-packages\sqlalchemy\engine\base.py", line 1317, in _execute_context
+    self._handle_dbapi_exception(
+  File "C:\Users\dacon\AppData\Local\Programs\Python\Python38-32\lib\site-packages\sqlalchemy\engine\base.py", line 1511, in _handle_dbapi_exception
+    util.raise_(
+  File "C:\Users\dacon\AppData\Local\Programs\Python\Python38-32\lib\site-packages\sqlalchemy\util\compat.py", line 178, in raise_
+    raise exception
+  File "C:\Users\dacon\AppData\Local\Programs\Python\Python38-32\lib\site-packages\sqlalchemy\engine\base.py", line 1277, in _execute_context
+    self.dialect.do_execute(
+  File "C:\Users\dacon\AppData\Local\Programs\Python\Python38-32\lib\site-packages\sqlalchemy\engine\default.py", line 593, in do_execute
+    cursor.execute(statement, parameters)
+sqlalchemy.exc.OperationalError: (sqlite3.OperationalError) no such table: artist
+[SQL: SELECT artist.id AS artist_id, artist.name AS artist_name 
+FROM artist]
+(Background on this error at: http://sqlalche.me/e/13/e3q8)
+2020-09-11 19:56:47,536 ERROR: Exception on /venues/create [GET] [in C:\Users\dacon\AppData\Local\Programs\Python\Python38-32\lib\site-packages\flask\app.py:1891]
+Traceback (most recent call last):
+  File "C:\Users\dacon\AppData\Local\Programs\Python\Python38-32\lib\site-packages\flask\app.py", line 2447, in wsgi_app
+    response = self.full_dispatch_request()
+  File "C:\Users\dacon\AppData\Local\Programs\Python\Python38-32\lib\site-packages\flask\app.py", line 1952, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "C:\Users\dacon\AppData\Local\Programs\Python\Python38-32\lib\site-packages\flask\app.py", line 1821, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "C:\Users\dacon\AppData\Local\Programs\Python\Python38-32\lib\site-packages\flask\_compat.py", line 39, in reraise
+    raise value
+  File "C:\Users\dacon\AppData\Local\Programs\Python\Python38-32\lib\site-packages\flask\app.py", line 1950, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "C:\Users\dacon\AppData\Local\Programs\Python\Python38-32\lib\site-packages\flask\app.py", line 1936, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "C:\Users\dacon\Documents\Github\FSND\projects\01_fyyur\starter_code\app.py", line 126, in create_venue_form
+    @app.route('/venues/create', methods=['GET'])
+  File "C:\Users\dacon\AppData\Local\Programs\Python\Python38-32\lib\site-packages\wtforms\form.py", line 208, in __call__
+    return type.__call__(cls, *args, **kwargs)
+  File "C:\Users\dacon\AppData\Local\Programs\Python\Python38-32\lib\site-packages\flask_wtf\form.py", line 157, in __init__
+    super(Form, self).__init__(*args, **kwargs)
+  File "C:\Users\dacon\AppData\Local\Programs\Python\Python38-32\lib\site-packages\flask_wtf\form.py", line 87, in __init__
+    super(FlaskForm, self).__init__(formdata=formdata, **kwargs)
+  File "C:\Users\dacon\AppData\Local\Programs\Python\Python38-32\lib\site-packages\wtforms\form.py", line 274, in __init__
+    self.process(formdata, obj, data=data, **kwargs)
+  File "C:\Users\dacon\AppData\Local\Programs\Python\Python38-32\lib\site-packages\wtforms\form.py", line 131, in process
+    field.process(formdata)
+  File "C:\Users\dacon\AppData\Local\Programs\Python\Python38-32\lib\site-packages\wtforms\csrf\core.py", line 43, in process
+    self.current_token = self.csrf_impl.generate_csrf_token(self)
+  File "C:\Users\dacon\AppData\Local\Programs\Python\Python38-32\lib\site-packages\flask_wtf\csrf.py", line 139, in generate_csrf_token
+    return generate_csrf(
+  File "C:\Users\dacon\AppData\Local\Programs\Python\Python38-32\lib\site-packages\flask_wtf\csrf.py", line 33, in generate_csrf
+    secret_key = _get_config(
+  File "C:\Users\dacon\AppData\Local\Programs\Python\Python38-32\lib\site-packages\flask_wtf\csrf.py", line 128, in _get_config
+    raise RuntimeError(message)
+RuntimeError: A secret key is required to use CSRF.
+2020-09-11 19:57:38,793 ERROR: Exception on /venues [GET] [in C:\Users\dacon\AppData\Local\Programs\Python\Python38-32\lib\site-packages\flask\app.py:1891]
+Traceback (most recent call last):
+  File "C:\Users\dacon\AppData\Local\Programs\Python\Python38-32\lib\site-packages\sqlalchemy\engine\base.py", line 1277, in _execute_context
+    self.dialect.do_execute(
+  File "C:\Users\dacon\AppData\Local\Programs\Python\Python38-32\lib\site-packages\sqlalchemy\engine\default.py", line 593, in do_execute
+    cursor.execute(statement, parameters)
+sqlite3.OperationalError: no such table: venue
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\dacon\AppData\Local\Programs\Python\Python38-32\lib\site-packages\flask\app.py", line 2447, in wsgi_app
+    response = self.full_dispatch_request()
+  File "C:\Users\dacon\AppData\Local\Programs\Python\Python38-32\lib\site-packages\flask\app.py", line 1952, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "C:\Users\dacon\AppData\Local\Programs\Python\Python38-32\lib\site-packages\flask\app.py", line 1821, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "C:\Users\dacon\AppData\Local\Programs\Python\Python38-32\lib\site-packages\flask\_compat.py", line 39, in reraise
+    raise value
+  File "C:\Users\dacon\AppData\Local\Programs\Python\Python38-32\lib\site-packages\flask\app.py", line 1950, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "C:\Users\dacon\AppData\Local\Programs\Python\Python38-32\lib\site-packages\flask\app.py", line 1936, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "C:\Users\dacon\Documents\Github\FSND\projects\01_fyyur\starter_code\app.py", line 47, in venues
+    Data = []
+  File "C:\Users\dacon\AppData\Local\Programs\Python\Python38-32\lib\site-packages\sqlalchemy\orm\query.py", line 3341, in all
+    return list(self)
+  File "C:\Users\dacon\AppData\Local\Programs\Python\Python38-32\lib\site-packages\sqlalchemy\orm\query.py", line 3503, in __iter__
+    return self._execute_and_instances(context)
+  File "C:\Users\dacon\AppData\Local\Programs\Python\Python38-32\lib\site-packages\sqlalchemy\orm\query.py", line 3528, in _execute_and_instances
+    result = conn.execute(querycontext.statement, self._params)
+  File "C:\Users\dacon\AppData\Local\Programs\Python\Python38-32\lib\site-packages\sqlalchemy\engine\base.py", line 1014, in execute
+    return meth(self, multiparams, params)
+  File "C:\Users\dacon\AppData\Local\Programs\Python\Python38-32\lib\site-packages\sqlalchemy\sql\elements.py", line 298, in _execute_on_connection
+    return connection._execute_clauseelement(self, multiparams, params)
+  File "C:\Users\dacon\AppData\Local\Programs\Python\Python38-32\lib\site-packages\sqlalchemy\engine\base.py", line 1127, in _execute_clauseelement
+    ret = self._execute_context(
+  File "C:\Users\dacon\AppData\Local\Programs\Python\Python38-32\lib\site-packages\sqlalchemy\engine\base.py", line 1317, in _execute_context
+    self._handle_dbapi_exception(
+  File "C:\Users\dacon\AppData\Local\Programs\Python\Python38-32\lib\site-packages\sqlalchemy\engine\base.py", line 1511, in _handle_dbapi_exception
+    util.raise_(
+  File "C:\Users\dacon\AppData\Local\Programs\Python\Python38-32\lib\site-packages\sqlalchemy\util\compat.py", line 178, in raise_
+    raise exception
+  File "C:\Users\dacon\AppData\Local\Programs\Python\Python38-32\lib\site-packages\sqlalchemy\engine\base.py", line 1277, in _execute_context
+    self.dialect.do_execute(
+  File "C:\Users\dacon\AppData\Local\Programs\Python\Python38-32\lib\site-packages\sqlalchemy\engine\default.py", line 593, in do_execute
+    cursor.execute(statement, parameters)
+sqlalchemy.exc.OperationalError: (sqlite3.OperationalError) no such table: venue
+[SQL: SELECT venue.id AS venue_id, venue.name AS venue_name, venue.genres AS venue_genres, venue.address AS venue_address, venue.city AS venue_city, venue.state AS venue_state, venue.phone AS venue_phone, venue.website AS venue_website, venue.facebook_link AS venue_facebook_link, venue.seeking_talent AS venue_seeking_talent, venue.seeking_description AS venue_seeking_description, venue.image_link AS venue_image_link 
+FROM venue]
+(Background on this error at: http://sqlalche.me/e/13/e3q8)
+2020-09-11 19:59:33,608 ERROR: Exception on /venues [GET] [in C:\Users\dacon\AppData\Local\Programs\Python\Python38-32\lib\site-packages\flask\app.py:1891]
+Traceback (most recent call last):
+  File "C:\Users\dacon\AppData\Local\Programs\Python\Python38-32\lib\site-packages\sqlalchemy\engine\base.py", line 1277, in _execute_context
+    self.dialect.do_execute(
+  File "C:\Users\dacon\AppData\Local\Programs\Python\Python38-32\lib\site-packages\sqlalchemy\engine\default.py", line 593, in do_execute
+    cursor.execute(statement, parameters)
+sqlite3.OperationalError: no such table: venue
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\dacon\AppData\Local\Programs\Python\Python38-32\lib\site-packages\flask\app.py", line 2447, in wsgi_app
+    response = self.full_dispatch_request()
+  File "C:\Users\dacon\AppData\Local\Programs\Python\Python38-32\lib\site-packages\flask\app.py", line 1952, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "C:\Users\dacon\AppData\Local\Programs\Python\Python38-32\lib\site-packages\flask\app.py", line 1821, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "C:\Users\dacon\AppData\Local\Programs\Python\Python38-32\lib\site-packages\flask\_compat.py", line 39, in reraise
+    raise value
+  File "C:\Users\dacon\AppData\Local\Programs\Python\Python38-32\lib\site-packages\flask\app.py", line 1950, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "C:\Users\dacon\AppData\Local\Programs\Python\Python38-32\lib\site-packages\flask\app.py", line 1936, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "C:\Users\dacon\Documents\Github\FSND\projects\01_fyyur\starter_code\app.py", line 47, in venues
+    'id': self.id,
+  File "C:\Users\dacon\AppData\Local\Programs\Python\Python38-32\lib\site-packages\sqlalchemy\orm\query.py", line 3341, in all
+    return list(self)
+  File "C:\Users\dacon\AppData\Local\Programs\Python\Python38-32\lib\site-packages\sqlalchemy\orm\query.py", line 3503, in __iter__
+    return self._execute_and_instances(context)
+  File "C:\Users\dacon\AppData\Local\Programs\Python\Python38-32\lib\site-packages\sqlalchemy\orm\query.py", line 3528, in _execute_and_instances
+    result = conn.execute(querycontext.statement, self._params)
+  File "C:\Users\dacon\AppData\Local\Programs\Python\Python38-32\lib\site-packages\sqlalchemy\engine\base.py", line 1014, in execute
+    return meth(self, multiparams, params)
+  File "C:\Users\dacon\AppData\Local\Programs\Python\Python38-32\lib\site-packages\sqlalchemy\sql\elements.py", line 298, in _execute_on_connection
+    return connection._execute_clauseelement(self, multiparams, params)
+  File "C:\Users\dacon\AppData\Local\Programs\Python\Python38-32\lib\site-packages\sqlalchemy\engine\base.py", line 1127, in _execute_clauseelement
+    ret = self._execute_context(
+  File "C:\Users\dacon\AppData\Local\Programs\Python\Python38-32\lib\site-packages\sqlalchemy\engine\base.py", line 1317, in _execute_context
+    self._handle_dbapi_exception(
+  File "C:\Users\dacon\AppData\Local\Programs\Python\Python38-32\lib\site-packages\sqlalchemy\engine\base.py", line 1511, in _handle_dbapi_exception
+    util.raise_(
+  File "C:\Users\dacon\AppData\Local\Programs\Python\Python38-32\lib\site-packages\sqlalchemy\util\compat.py", line 178, in raise_
+    raise exception
+  File "C:\Users\dacon\AppData\Local\Programs\Python\Python38-32\lib\site-packages\sqlalchemy\engine\base.py", line 1277, in _execute_context
+    self.dialect.do_execute(
+  File "C:\Users\dacon\AppData\Local\Programs\Python\Python38-32\lib\site-packages\sqlalchemy\engine\default.py", line 593, in do_execute
+    cursor.execute(statement, parameters)
+sqlalchemy.exc.OperationalError: (sqlite3.OperationalError) no such table: venue
+[SQL: SELECT venue.id AS venue_id, venue.name AS venue_name, venue.genres AS venue_genres, venue.address AS venue_address, venue.city AS venue_city, venue.state AS venue_state, venue.phone AS venue_phone, venue.website AS venue_website, venue.facebook_link AS venue_facebook_link, venue.seeking_talent AS venue_seeking_talent, venue.seeking_description AS venue_seeking_description, venue.image_link AS venue_image_link 
+FROM venue]
+(Background on this error at: http://sqlalche.me/e/13/e3q8)
