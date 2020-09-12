@@ -212,30 +212,55 @@ def show_venue(venue_id):
   # shows the venue page with the given venue_id
   # TODO: replace with real venue data from the venues table, using venue_id
   venue = Venue.query.get(venue_id)
-  shows = Shows.query.filter_by(venue_id=venue_id).all()
+  #shows = Shows.query.filter_by(venue_id=venue_id).all()
   
-  upcoming_count = 0
-  past_count = 0
-  todays_date = datetime.now()
 
   data = Venue.details(venue)
 
-  for item in shows:
+  """ for item in shows:
     show_data = {
           "artist_id": item.artist_id,
           "artist_name": item.artist.name,
           "artist_image_link": item.artist.image_link,
           "start_time": format_datetime(str(item.start_time))
-        }
-    if item.start_time > todays_date:
+        } """
+  """ if item.start_time > todays_date:
       data['upcoming_shows'].append(show_data)
       upcoming_count += 1
-    else:
+    else:---------------------------------------------------------------------------------------------fix
       data['past_shows'].append(show_data)
-      past_count += 1
+      past_count += 1 """
+  past_shows = db.session.query(Artist, Shows).join(Shows).join(Venue).\
+    filter(
+        Shows.venue_id == venue_id,
+        Shows.artist_id == Artist.id,
+        Shows.start_time < datetime.now()
+    ).\
+    all()
+  upcoming_shows = db.session.query(Artist, Shows).join(Shows).join(Venue).\
+    filter(
+        Shows.venue_id == venue_id,
+        Shows.artist_id == Artist.id,
+        Shows.start_time > datetime.now()
+    ).\
+    all()
 
-  data['upcoming_shows_count'] = upcoming_count
-  data['past_shows_count'] = past_count
+  for artist, show in past_shows:
+        data['past_shows'].append({
+            'artist_id': artist.id,
+            'artist_name': artist.name,
+            'artist_image_link': artist.image_link,
+            'start_time': show.start_time.strftime("%Y-%m-%d, %H:%M")
+        })
+  for artist, show in upcoming_shows:
+        data['upcoming_shows'].append({
+            'artist_id': artist.id,
+            'artist_name': artist.name,
+            'artist_image_link': artist.image_link,
+            'start_time': show.start_time.strftime("%Y-%m-%d, %H:%M")
+        })
+  data['upcoming_shows_count'] = len(upcoming_shows)
+  data['past_shows_count'] = len(past_shows)
   
 
   logging.error(f'This is venue.genres -- {venue.genres}')
@@ -349,11 +374,10 @@ def show_artist(artist_id):
 
   data = Artist.details(artist)
   
-  todays_date = datetime.now()
-  upcoming_count = 0
-  past_count = 0
 
-  shows = Shows.query.filter_by(artist_id=artist_id).all()
+  
+
+  """ shows = Shows.query.filter_by(artist_id=artist_id).all()
 
   for item in shows:
     show_data = {
@@ -370,7 +394,38 @@ def show_artist(artist_id):
         past_count += 1
   
   data['upcoming_shows_count'] = upcoming_count
-  data['past_shows_count'] = past_count
+  data['past_shows_count'] = past_count """
+  past_shows = db.session.query(Venue, Shows).join(Shows).join(Artist).\
+    filter(
+        Shows.venue_id == Venue.id,
+        Shows.artist_id == artist_id,
+        Shows.start_time < datetime.now()
+    ).\
+    all()
+  upcoming_shows = db.session.query(Venue, Shows).join(Shows).join(Artist).\
+    filter(
+        Shows.venue_id == Venue.id,
+        Shows.artist_id == artist_id,
+        Shows.start_time > datetime.now()
+    ).\
+    all()
+
+  for venue, show in past_shows:
+        data['past_shows'].append({
+            'venue_id': venue.id,
+            'venue_name': venue.name,
+            'venue_image_link': venue.image_link,
+            'start_time': show.start_time.strftime("%Y-%m-%d, %H:%M")
+        })
+  for venue, show in upcoming_shows:
+        data['upcoming_shows'].append({
+            'venue_id': venue.id,
+            'venue_name': venue.name,
+            'venue_image_link': venue.image_link,
+            'start_time': show.start_time.strftime("%Y-%m-%d, %H:%M")
+        })
+  data['upcoming_shows_count'] = len(upcoming_shows)
+  data['past_shows_count'] = len(past_shows)
 
   logging.error(f'This is data --- {data}')
   return render_template('pages/show_artist.html', artist=data)
