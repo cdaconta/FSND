@@ -107,7 +107,7 @@ def create_app(test_config=None):
   This removal will persist in the database and when you refresh the page. 
   '''
   @app.route("/questions/<question_id>", methods=['DELETE'])
-    def delete_question(question_id):
+  def delete_question(question_id):
         try:
             question = Question.query.get(question_id)
             question.delete()
@@ -140,16 +140,16 @@ def create_app(test_config=None):
     new_category = data.get('category', None)
 
     try:
-    question_obj = Question(
+      question_obj = Question(
       question = new_question,
       answer = new_answer,
       difficulty = new_difficulty,
       category = new_category  #may need ['id']
 
-    )
+      )
 
-    question_obj.insert()
-    return jsonify({
+      question_obj.insert()
+      return jsonify({
                 'success': True,
                 'created': question_obj.id  #not sure if necessary
             })
@@ -206,7 +206,7 @@ def create_app(test_config=None):
   @app.route('/categories/<int:category_id>/questions')
   def get_questions_by_category(category_id):
       category_name = Category.query.get(category_id)
-      questions = Question.query.filter_by(Question.category = category_name).all()
+      questions = Question.query.filter_by(Question.category == category_name).all()
 
       question_data = []
 
@@ -237,27 +237,27 @@ def create_app(test_config=None):
   def get_question_quiz():
     data = request.get_json()
 
-    previousQuestion = data.get('previous_questions')
+    previousQuestions = data.get('previous_questions')
     quizCategory = data.get('quiz_category')
 
+    category_id = quizCategory['id']
+
     # abort 400
-      if ((quizCategory is None) or (previousCategory is None)):
+    if ((quizCategory is None) or (previousCategory is None)):
           abort(400)
 
-    # if ALL is selected
-      if (quizCategory['id'] == 0):
-            questions = Question.query.all()
-        # questions for given category
-      else:  #not sure if we need ['id']
-            questions = Question.query.filter_by(category=quizCategory['id']).all()
-
-#-----------------------------work needed
     
-      if cid == 0:
-        selection = Question.query.filter(Question.id.notin_(previousQuestion)).all()
-      else:
-        selection = Question.query.filter(Question.category==cid, Question.id.notin_(previousQuestion)).all()
-    random.randint(1, 10)
+    if category_id == 0:
+        filtered_result = Question.query.filter(Question.id.notin_(previousQuestions)).all()
+    else:
+        filtered_result = Question.query.filter(Question.category==category_id, Question.id.notin_(previousQuestions)).all()
+    
+    num = random.randint(0, len(filtered_result) - 1)
+
+    return jsonify({
+        'success': True,
+        'question': filtered_result[num].question
+    })
     
   '''
   @TODO: 
@@ -265,7 +265,7 @@ def create_app(test_config=None):
   including 404 and 422. 
   '''
   @app.errorhandler(400)
-    def bad_request(error):
+  def bad_request(error):
         return jsonify({
             "success": False,
             "error": 400,
@@ -273,15 +273,15 @@ def create_app(test_config=None):
         }), 400
 
   @app.errorhandler(404)
-    def resource_not_found(error):
+  def resource_not_found(error):
         return jsonify({
             "success": False,
             "error": 404,
             "message": "resource not found"
         }), 404
 
-    @app.errorhandler(422)
-    def unprocessable(error):
+  @app.errorhandler(422)
+  def unprocessable(error):
         return jsonify({
             "success": False,
             "error": 422,
