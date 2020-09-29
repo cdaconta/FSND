@@ -144,7 +144,7 @@ def create_app(test_config=None):
       question = new_question,
       answer = new_answer,
       difficulty = new_difficulty,
-      category = new_category
+      category = new_category  #may need ['id']
 
     )
 
@@ -235,7 +235,30 @@ def create_app(test_config=None):
   '''
   @app.route('/quizzes', methods = ['POST'])
   def get_question_quiz():
-    pass
+    data = request.get_json()
+
+    previousQuestion = data.get('previous_questions')
+    quizCategory = data.get('quiz_category')
+
+    # abort 400
+      if ((quizCategory is None) or (previousCategory is None)):
+          abort(400)
+
+    # if ALL is selected
+      if (quizCategory['id'] == 0):
+            questions = Question.query.all()
+        # questions for given category
+      else:  #not sure if we need ['id']
+            questions = Question.query.filter_by(category=quizCategory['id']).all()
+
+#-----------------------------work needed
+    
+      if cid == 0:
+        selection = Question.query.filter(Question.id.notin_(previousQuestion)).all()
+      else:
+        selection = Question.query.filter(Question.category==cid, Question.id.notin_(previousQuestion)).all()
+    random.randint(1, 10)
+    
   '''
   @TODO: 
   Create error handlers for all expected errors 
@@ -248,9 +271,9 @@ def create_app(test_config=None):
             "error": 400,
             "message": "bad request"
         }), 400
-        
+
   @app.errorhandler(404)
-    def not_found(error):
+    def resource_not_found(error):
         return jsonify({
             "success": False,
             "error": 404,
