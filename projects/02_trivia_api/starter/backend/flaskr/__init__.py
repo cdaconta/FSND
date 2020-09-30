@@ -46,21 +46,23 @@ def create_app(test_config=None):
 
     #logging.error(f'This is categories -- {categories}')
     
-    data = []
+    data = {}
 
     # 404 if no categories found
     if (len(categories) == 0):
         abort(404) 
 
     for item in categories:
-        data.append({
-            'success':True,
-            'categories':item.format()
-            }
-        )
+        data[item.id] = item.type
+            
+        
     
 
-    return jsonify(data)
+    return jsonify({
+        'success':True,
+        'categories': data
+
+    })
 
   '''
   @TODO: 
@@ -80,15 +82,15 @@ def create_app(test_config=None):
     questions = Question.query.order_by(Question.id).all()
     questions_paginated = paginate(request, questions)
     categories = Category.query.order_by(Category.type).all()
-    category_data = []
+    category_data = {}
 
-    #num = len(questions)
+    # 404 if there are no questions
+    if (len(questions) == 0):
+            abort(404)
 
     for item in categories:
-      category_data.append({
-        'id':item.id,
-        'type':item.type
-      })
+      category_data[item.id] = item.type
+        
 
     return jsonify({
       'success': True,
@@ -168,13 +170,7 @@ def create_app(test_config=None):
   only question that include that string within their question. 
   Try using the word "title" to start. 
   '''
-  """ success: (result) => {
-        this.setState({
-          questions: result.questions,
-          totalQuestions: result.total_questions,
-          currentCategory: result.current_category })
-        return;
-      }, """
+ 
   @app.route('/questions/search', methods=['POST'])
   def search_questions():
       search_box = request.form.get('search_term', '')
@@ -197,27 +193,21 @@ def create_app(test_config=None):
   TEST: In the "List" tab / main screen, clicking on one of the 
   categories in the left column will cause only questions of that 
   category to be shown. 
-  success: (result) => {
-        this.setState({
-          questions: result.questions,
-          totalQuestions: result.total_questions,
-          currentCategory: result.current_category })
   '''
   @app.route('/categories/<int:category_id>/questions')
   def get_questions_by_category(category_id):
       category_name = Category.query.get(category_id)
+      # abort 400 for bad request
+      if (category_name is None):
+            abort(400)
+
       questions = Question.query.filter_by(Question.category == category_name).all()
-
-      question_data = []
-
-      for item in questions:
-        data.append({
-          item.format()
-        })
+      questions_paginated = paginate(request, questions)
+     
 
       return jsonify({
         'success':True,
-        'questions': question_data,
+        'questions': questions_paginated,
         'total_questions': len(questions),
         'current_category': category_id
       })
@@ -243,7 +233,7 @@ def create_app(test_config=None):
     category_id = quizCategory['id']
 
     # abort 400
-    if ((quizCategory is None) or (previousCategory is None)):
+    if ((quizCategory is None) or (previousQuestions is None)):
           abort(400)
 
     
