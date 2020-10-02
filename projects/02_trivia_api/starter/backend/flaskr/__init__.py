@@ -46,7 +46,7 @@ def create_app(test_config=None):
 
     #logging.error(f'This is categories -- {categories}')
     
-    data = {}
+    data = {}  #why?
 
     # 404 if no categories found
     if (len(categories) == 0):
@@ -173,19 +173,23 @@ def create_app(test_config=None):
  
   @app.route('/questions/search', methods=['POST'])
   def search_questions():
-      search_box = request.form.get('search_term', '')
-  # query to get result that is 'like' what is searched for 
-      search_data = Question.query.filter(Question.question.ilike(f'%{search_box}%'))
+      data = request.get_json()
+      search_box = data.get('searchTerm')
+      # query to get result that is 'like' what is searched for 
+      search_data = Question.query.filter(Question.question.ilike(f'%{search_box}%')).all()
+
+      questions_paginated = paginate(request, search_data)
   
-      response={
+
+      return jsonify(
+        {
       "success":True,
-      "questions": search_data,
+      "questions": questions_paginated,
       "total_questions": len(search_data),
       "current_category":None
 
-      }
-
-      return jsonify(response)
+        }
+      )
   '''
   @TODO: 
   Create a GET endpoint to get questions based on category. 
@@ -196,14 +200,11 @@ def create_app(test_config=None):
   '''
   @app.route('/categories/<int:category_id>/questions')
   def get_questions_by_category(category_id):
-      category_name = Category.query.get(category_id)
-      # abort 400 for bad request
-      if (category_name is None):
-            abort(400)
 
-      questions = Question.query.filter_by(Question.category == category_name).all()
+      questions = Question.query.filter(Question.category==category_id).all()
       questions_paginated = paginate(request, questions)
-     
+      if len(questions) == 0:
+        abort(404)
 
       return jsonify({
         'success':True,
