@@ -44,24 +44,18 @@ def create_app(test_config=None):
   def get_categories():
     categories = Category.query.order_by(Category.id).all()
 
-    #logging.error(f'This is categories -- {categories}')
-    
-    data = {}  #why?
-
     # 404 if no categories found
     if (len(categories) == 0):
         abort(404) 
+    
+    data = {}  #why? because dict is more like json object
 
     for item in categories:
         data[item.id] = item.type
             
-        
-    
-
     return jsonify({
         'success':True,
         'categories': data
-
     })
 
   '''
@@ -80,18 +74,21 @@ def create_app(test_config=None):
   @app.route('/questions')
   def get_questions():
     questions = Question.query.order_by(Question.id).all()
-    questions_paginated = paginate(request, questions)
-    categories = Category.query.order_by(Category.type).all()
-    category_data = {}
-
     # 404 if there are no questions
     if (len(questions) == 0):
             abort(404)
 
+    questions_paginated = paginate(request, questions)
+    categories = Category.query.order_by(Category.type).all()
+
+    if (len(categories) == 0):
+            abort(404)
+
+    category_data = {}
+
     for item in categories:
       category_data[item.id] = item.type
         
-
     return jsonify({
       'success': True,
       'questions': questions_paginated,
@@ -173,23 +170,31 @@ def create_app(test_config=None):
  
   @app.route('/questions/search', methods=['POST'])
   def search_questions():
+    try:
       data = request.get_json()
       search_box = data.get('searchTerm')
+
+      logging.error(f'This ------------------------------------------------------------{search_box}')
+
       # query to get result that is 'like' what is searched for 
       search_data = Question.query.filter(Question.question.ilike(f'%{search_box}%')).all()
 
-      questions_paginated = paginate(request, search_data)
+      if(search_data is None):
+        abort(404)
+
+      #questions_paginated = paginate(request, search_data)
   
 
       return jsonify(
         {
       "success":True,
-      "questions": questions_paginated,
+      "questions": [question.format() for question in search_data],
       "total_questions": len(search_data),
       "current_category":None
-
         }
       )
+    except:
+      abort(404)
   '''
   @TODO: 
   Create a GET endpoint to get questions based on category. 
@@ -202,9 +207,11 @@ def create_app(test_config=None):
   def get_questions_by_category(category_id):
 
       questions = Question.query.filter(Question.category==category_id).all()
-      questions_paginated = paginate(request, questions)
+      
       if len(questions) == 0:
         abort(404)
+
+      questions_paginated = paginate(request, questions)
 
       return jsonify({
         'success':True,
@@ -236,7 +243,6 @@ def create_app(test_config=None):
     # abort 400
     if ((quizCategory is None) or (previousQuestions is None)):
           abort(400)
-
     
     if category_id == 0:
         filtered_result = Question.query.filter(Question.id.notin_(previousQuestions)).all()
