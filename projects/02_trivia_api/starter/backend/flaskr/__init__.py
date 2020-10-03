@@ -251,9 +251,11 @@ def create_app(test_config=None):
     
     num = random.randint(0, len(filtered_result) - 1)
 
+    random_question = filtered_result[num].format()
+    print(f'this is filtered result {filtered_result[num].format()}')
     return jsonify({
         'success': True,
-        'question': filtered_result[num].question
+        'question': random_question
     })
     
   '''
