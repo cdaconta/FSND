@@ -48,7 +48,7 @@ def create_app(test_config=None):
     if (len(categories) == 0):
         abort(404) 
     
-    data = {}  #why? because dict is more like json object
+    data = {}  
 
     for item in categories:
         data[item.id] = item.type
