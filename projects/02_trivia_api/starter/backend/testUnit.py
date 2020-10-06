@@ -16,16 +16,18 @@ class UnitTestCase(unittest.TestCase):
         """Define test variables and initialize app."""
         self.app = create_app()
         self.client = self.app.test_client
-        self.database_name = "trivia"
+        self.database_name = "trivia_unit_test"
         self.database_path = "postgres://{}/{}".format(f'{user}:{password}@localhost:5432', self.database_name)
         setup_db(self.app, self.database_path)
 
-        """ self.new_book = {
-            'title': 'Anansi Boys',
-            'author': 'Neil Gaiman',
-            'rating': 5
+       # example question for use in tests
+        self.new_question = {
+            'question': 'What species are modern human beings?',
+            'answer': 'Homo Sapiens',
+            'difficulty': 2,
+            'category': 1
         }
- """
+
         # binds the app to the current context
         with self.app.app_context():
             self.db = SQLAlchemy()
@@ -37,28 +39,174 @@ class UnitTestCase(unittest.TestCase):
         """Executed after reach test"""
         pass
 
-# @TODO: Write at least two tests for each endpoint - one each for success and error behavior.
-#        You can feel free to write additional tests for nuanced functionality,
-#        Such as adding a book without a rating, etc. 
-#        Since there are four routes currently, you should have at least eight tests. 
-# Optional: Update the book information in setUp to make the test database your own! 
+
     def test_pagination(self):
+        """Test pagination failure 404"""
     
         res = self.client().get('/questions')
         data = json.loads(res.data)
         
+        #check the response 
         self.assertEqual(res.status_code, 200)
         self.assertEqual(data['success'], True)
-        self.assertTrue(data['total_books'])
-        self.assertTrue(len(data['books']))
+        self.assertTrue(data['total_questions'])
+        self.assertTrue(len(data['questions']))
         
     def test_404_beyond_valid_page(self):
-        res = self.client().get('/books?page=1000', json={'rating':1})
+        res = self.client().get('/questions?page=1000')
         data = json.loads(res.data)
         
         self.assertEqual(res.status_code, 404)
         self.assertEqual(data['success'], False)
         self.assertEqual(data['message'], 'resource not found')
-# Make the tests conveniently executable
+#----------------------------------------------------------------start here---------
+    def test_get_categories(self):
+        """Tests Get Categories"""
+        res = self.client().get('/categories')
+        data = json.loads(res.data)
+
+        self.assertEqual(res.status_code, 200)
+        self.assertEqual(data['success'], True)
+        self.assertTrue(len(data['categories']))
+
+    def test_non_existing_category_404(self):
+        """Test Non-Existing Category 404"""
+        res = self.client().get('/categories/87')
+        data = json.loads(res.data)
+
+        self.assertEqual(res.status_code, 404)
+        self.assertEqual(data['success'], False)
+        self.assertEqual(data['message'], 'resource not found')
+
+    def test_delete(self):
+        """Tests question delete"""
+
+        # create a new question to be deleted
+        question = Question(question=self.new_question['question'], 
+                            answer=self.new_question['answer'],
+                            category=self.new_question['category'], 
+                            difficulty=self.new_question['difficulty']
+                            )
+        question.insert()
+
+        question_id = question.id
+
+        # get number of questions before delete operation
+        number_of_questions_initially = len(Question.query.all())
+
+        # delete the question and store response
+        res = self.client().delete(f'/questions/{question_id}')
+        data = json.loads(res.data)
+
+        # get number of questions after the delete
+        number_of_questions_after_delete = len(Question.query.all())
+
+        # check if the question has been deleted
+        question = Question.query.filter(Question.id == question.id).one_or_none()
+
+        self.assertEqual(res.status_code, 200)
+        self.assertEqual(data['success'], True)
+        self.assertEqual(data['deleted'], question_id)
+        self.assertTrue(len(number_of_questions_initially) - len(number_of_questions_after_delete) == 1)
+        self.assertEqual(question, None)
+#-------------------------------------------------check http 422
+    def test_deleting_non_existing_question_422(self):
+      res = self.client().delete('/question/999999')
+      data = res.loads(res.data)
+
+      self.assertEqual(res.status_code, 422)
+      self.assertEqual(data['success'], False)
+      self.assertEqual(data['message'], 'unprocessable')
+#------------------------------------------------------------here
+    def test_add_question(self):
+        new_question = {
+            'question': 'new question',
+            'answer': 'new answer',
+            'difficulty': 1,
+            'category': 1
+        }
+        total_questions_before = len(Question.query.all())
+        res = self.client().post('/questions', json=new_question)
+        data = json.loads(res.data)
+        total_questions_after = len(Question.query.all())
+
+        self.assertEqual(res.status_code, 200)
+        self.assertEqual(data["success"], True)
+        self.assertEqual(total_questions_after, total_questions_before + 1)
+
+    def test_422_add_question(self):
+        new_question = {
+            'question': 'new_question',
+            'answer': 'new_answer',
+            'category': 1
+        }
+        res = self.client().post('/questions', json=new_question)
+        data = json.loads(res.data)
+
+        self.assertEqual(res.status_code, 422)
+        self.assertEqual(data["success"], False)
+        self.assertEqual(data["message"], "unprocessable")
+
+    def test_search_questions(self):
+        new_search = {'searchTerm': 'a'}
+        res = self.client().post('/questions/search', json=new_search)
+        data = json.loads(res.data)
+
+        self.assertEqual(res.status_code, 200)
+        self.assertEqual(data['success'], True)
+        self.assertIsNotNone(data['questions'])
+        self.assertIsNotNone(data['total_questions'])
+
+    def test_404_search_question(self):
+        new_search = {
+            'searchTerm': '',
+        }
+        res = self.client().post('/questions/search', json=new_search)
+        data = json.loads(res.data)
+
+        self.assertEqual(res.status_code, 404)
+        self.assertEqual(data["success"], False)
+        self.assertEqual(data["message"], "resource not found")
+
+    def test_get_questions_per_category(self):
+        res = self.client().get('/categories/1/questions')
+        data = json.loads(res.data)
+
+        self.assertEqual(res.status_code, 200)
+        self.assertEqual(data['success'], True)
+        self.assertTrue(len(data['questions']))
+        self.assertTrue(data['total_questions'])
+        self.assertTrue(data['current_category'])
+
+    def test_404_get_questions_per_category(self):
+        res = self.client().get('/categories/a/questions')
+        data = json.loads(res.data)
+
+        self.assertEqual(res.status_code, 404)
+        self.assertEqual(data["success"], False)
+        self.assertEqual(data["message"], "resource not found")
+
+    def test_play_quiz(self):
+        new_quiz_round = {'previous_questions': [],
+                          'quiz_category': {'type': 'Entertainment', 'id': 5}}
+
+        res = self.client().post('/quizzes', json=new_quiz_round)
+        data = json.loads(res.data)
+
+        self.assertEqual(res.status_code, 200)
+        self.assertEqual(data['success'], True)
+
+    def test_404_play_quiz(self):
+        new_quiz_round = {'previous_questions': []}
+        res = self.client().post('/quizzes', json=new_quiz_round)
+        data = json.loads(res.data)
+
+        self.assertEqual(res.status_code, 422)
+        self.assertEqual(data["success"], False)
+        self.assertEqual(data["message"], "unprocessable")
+
+
+
+# Make the tests executable
 if __name__ == "__main__":
     unittest.main()
