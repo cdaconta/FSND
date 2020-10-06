@@ -237,11 +237,14 @@ def create_app(test_config=None):
 
     previousQuestions = data.get('previous_questions')
     quizCategory = data.get('quiz_category')
-
-    category_id = quizCategory['id']
-
+    #category_id = data['quiz_category']['id']
+    #print(f'this is quizCategory --- {quizCategory}')
+    
+    #was quizCategory['id']
+    category_id = data['quiz_category']['id']
+    #print(f'this is quizCategory --- {quizCategory['id']}')
     # abort 400
-    if ((quizCategory is None) or (previousQuestions is None)):
+    if ((category_id is None) or (previousQuestions is None)):
           abort(400)
     
     if category_id == 0:

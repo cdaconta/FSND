@@ -118,29 +118,27 @@ class UnitTestCase(unittest.TestCase):
       self.assertEqual(data['success'], False)
       self.assertEqual(data['message'], 'unprocessable')
 #------------------------------------------------------------here
-    def test_add_question(self):
-        new_question = {
-            'question': 'new question',
-            'answer': 'new answer',
-            'difficulty': 1,
-            'category': 1
-        }
-        total_questions_before = len(Question.query.all())
-        res = self.client().post('/questions', json=new_question)
+    def test_add_a_question(self):
+        # create a new question to be deleted
+        question = Question(question=self.new_question['question'], 
+                            answer=self.new_question['answer'],
+                            category=self.new_question['category'], 
+                            difficulty=self.new_question['difficulty']
+                            )
+        total_questions_initially = len(Question.query.all())
+        res = self.client().post('/questions', json=question)
         data = json.loads(res.data)
-        total_questions_after = len(Question.query.all())
+        total_questions_after_adding = len(Question.query.all())
 
         self.assertEqual(res.status_code, 200)
         self.assertEqual(data["success"], True)
-        self.assertEqual(total_questions_after, total_questions_before + 1)
+        self.assertEqual(total_questions_after_adding, total_questions_initially + 1)
 
-    def test_422_add_question(self):
-        new_question = {
-            'question': 'new_question',
-            'answer': 'new_answer',
-            'category': 1
+    def test_add_question_422(self):
+        question = {
+            'question': 0
         }
-        res = self.client().post('/questions', json=new_question)
+        res = self.client().post('/questions', json=question)
         data = json.loads(res.data)
 
         self.assertEqual(res.status_code, 422)
@@ -148,27 +146,27 @@ class UnitTestCase(unittest.TestCase):
         self.assertEqual(data["message"], "unprocessable")
 
     def test_search_questions(self):
-        new_search = {'searchTerm': 'a'}
-        res = self.client().post('/questions/search', json=new_search)
+        search = {'searchTerm': 'E'}
+        res = self.client().post('/questions/search', json=search)
         data = json.loads(res.data)
 
         self.assertEqual(res.status_code, 200)
         self.assertEqual(data['success'], True)
-        self.assertIsNotNone(data['questions'])
-        self.assertIsNotNone(data['total_questions'])
+        self.assertTrue(data['questions'])
+        self.assertTrue(data['total_questions'])
 
-    def test_404_search_question(self):
-        new_search = {
-            'searchTerm': '',
+    def test_search_question_404(self):
+        search = {
+            'searchTerm': '~',
         }
-        res = self.client().post('/questions/search', json=new_search)
+        res = self.client().post('/questions/search', json=search)
         data = json.loads(res.data)
 
         self.assertEqual(res.status_code, 404)
         self.assertEqual(data["success"], False)
         self.assertEqual(data["message"], "resource not found")
 
-    def test_get_questions_per_category(self):
+    def test_get_questions_by_category(self):
         res = self.client().get('/categories/1/questions')
         data = json.loads(res.data)
 
@@ -178,8 +176,8 @@ class UnitTestCase(unittest.TestCase):
         self.assertTrue(data['total_questions'])
         self.assertTrue(data['current_category'])
 
-    def test_404_get_questions_per_category(self):
-        res = self.client().get('/categories/a/questions')
+    def test_get_questions_by_category_404(self):
+        res = self.client().get('/categories/999999/questions')
         data = json.loads(res.data)
 
         self.assertEqual(res.status_code, 404)
@@ -187,18 +185,18 @@ class UnitTestCase(unittest.TestCase):
         self.assertEqual(data["message"], "resource not found")
 
     def test_play_quiz(self):
-        new_quiz_round = {'previous_questions': [],
-                          'quiz_category': {'type': 'Entertainment', 'id': 5}}
+        quiz = {'previous_questions': [],
+                          'quiz_category': {'type': 'Science', 'id': 1}}
 
-        res = self.client().post('/quizzes', json=new_quiz_round)
+        res = self.client().post('/quizzes', json=quiz)
         data = json.loads(res.data)
 
         self.assertEqual(res.status_code, 200)
         self.assertEqual(data['success'], True)
 
-    def test_404_play_quiz(self):
-        new_quiz_round = {'previous_questions': []}
-        res = self.client().post('/quizzes', json=new_quiz_round)
+    def test_play_quiz_404(self):
+        quiz = {'previous_questions': []}
+        res = self.client().post('/quizzes', json=quiz)
         data = json.loads(res.data)
 
         self.assertEqual(res.status_code, 422)
