@@ -81,7 +81,7 @@ def create_app(test_config=None):
     questions_paginated = paginate(request, questions)
     categories = Category.query.order_by(Category.type).all()
 
-    if (len(categories) == 0):
+    if (len(questions_paginated) == 0):
             abort(404)
 
     category_data = {}
@@ -116,7 +116,7 @@ def create_app(test_config=None):
             })
         except:
             question.rollback()
-            abort(422)
+            abort(404)
         finally:
             question.close()
   '''
@@ -133,10 +133,14 @@ def create_app(test_config=None):
   def create_questions():
     data = request.get_json()
 
-    new_question = data.get('question', None)
-    new_answer = data.get('answer', None)
-    new_difficulty = data.get('difficulty', None)
-    new_category = data.get('category', None)
+    new_question = data.get('question')
+    new_answer = data.get('answer')
+    new_difficulty = data.get('difficulty')
+    new_category = data.get('category')
+
+    if ((new_question is None) or (new_answer is None)
+        or (new_difficulty is None) or (new_category is None)):
+        abort(422)
 
     try:
       question_obj = Question(
@@ -174,13 +178,12 @@ def create_app(test_config=None):
       data = request.get_json()
       search_box = data.get('searchTerm')
 
-      logging.error(f'This ------------------------------------------------------------{search_box}')
+      
+      if(search_box == '' or search_box is None):
+        abort(404)
 
       # query to get result that is 'like' what is searched for 
       search_data = Question.query.filter(Question.question.ilike(f'%{search_box}%')).all()
-
-      if(search_data is None):
-        abort(404)
 
       #questions_paginated = paginate(request, search_data)
   
@@ -236,21 +239,21 @@ def create_app(test_config=None):
     data = request.get_json()
 
     previousQuestions = data.get('previous_questions')
-    quizCategory = data.get('quiz_category')
+    quizCategory = data.get('quiz_category')#['id']
     #category_id = data['quiz_category']['id']
-    #print(f'this is quizCategory --- {quizCategory}')
+    print(f'this is quizCategory --- {quizCategory}')
     
     #was quizCategory['id']
-    category_id = data['quiz_category']['id']
-    #print(f'this is quizCategory --- {quizCategory['id']}')
+    #category_id = data['quiz_category']['id']
+    #print(f'this is quizCategory --- {data["quiz_category"]["id"]}')
     # abort 400
-    if ((category_id is None) or (previousQuestions is None)):
+    if ((quizCategory is None) or (previousQuestions is None)):
           abort(400)
     
-    if category_id == 0:
+    if quizCategory['type'] == 'click':
         filtered_result = Question.query.filter(Question.id.notin_(previousQuestions)).all()
     else:
-        filtered_result = Question.query.filter(Question.category==category_id, Question.id.notin_(previousQuestions)).all()
+        filtered_result = Question.query.filter(Question.category==quizCategory['id'], Question.id.notin_(previousQuestions)).all()
     
     num = random.randint(0, len(filtered_result) - 1)
 

@@ -20,14 +20,6 @@ class UnitTestCase(unittest.TestCase):
         self.database_path = "postgres://{}/{}".format(f'{user}:{password}@localhost:5432', self.database_name)
         setup_db(self.app, self.database_path)
 
-       # example question for use in tests
-        self.new_question = {
-            'question': 'What species are modern human beings?',
-            'answer': 'Homo Sapiens',
-            'difficulty': 2,
-            'category': 1
-        }
-
         # binds the app to the current context
         with self.app.app_context():
             self.db = SQLAlchemy()
@@ -52,7 +44,7 @@ class UnitTestCase(unittest.TestCase):
         self.assertTrue(data['total_questions'])
         self.assertTrue(len(data['questions']))
         
-    def test_404_beyond_valid_page(self):
+    def test_beyond_valid_page_error_404(self):
         res = self.client().get('/questions?page=1000')
         data = json.loads(res.data)
         
@@ -71,7 +63,7 @@ class UnitTestCase(unittest.TestCase):
 
     def test_non_existing_category_404(self):
         """Test Non-Existing Category 404"""
-        res = self.client().get('/categories/87')
+        res = self.client().get('/categories/987')
         data = json.loads(res.data)
 
         self.assertEqual(res.status_code, 404)
@@ -82,23 +74,24 @@ class UnitTestCase(unittest.TestCase):
         """Tests question delete"""
 
         # create a new question to be deleted
-        question = Question(question=self.new_question['question'], 
-                            answer=self.new_question['answer'],
-                            category=self.new_question['category'], 
-                            difficulty=self.new_question['difficulty']
-                            )
+        question = Question(
+                            question='some question', 
+                            answer='some answer',
+                            category=2, 
+                            difficulty=3
+                           )
         question.insert()
 
         question_id = question.id
 
-        # get number of questions before delete operation
+        # get the number of questions before delete operation
         number_of_questions_initially = len(Question.query.all())
 
         # delete the question and store response
         res = self.client().delete(f'/questions/{question_id}')
         data = json.loads(res.data)
 
-        # get number of questions after the delete
+        # get the number of questions after the delete
         number_of_questions_after_delete = len(Question.query.all())
 
         # check if the question has been deleted
@@ -106,25 +99,26 @@ class UnitTestCase(unittest.TestCase):
 
         self.assertEqual(res.status_code, 200)
         self.assertEqual(data['success'], True)
-        self.assertEqual(data['deleted'], question_id)
-        self.assertTrue(len(number_of_questions_initially) - len(number_of_questions_after_delete) == 1)
+        self.assertEqual(data['deleted'], str(question_id))
+        self.assertTrue(number_of_questions_initially - number_of_questions_after_delete == 1)
         self.assertEqual(question, None)
 #-------------------------------------------------check http 422
-    def test_deleting_non_existing_question_422(self):
-      res = self.client().delete('/question/999999')
-      data = res.loads(res.data)
+    def test_deleting_non_existing_question_error_404(self):
+      res = self.client().delete('/question/a')
+      data = json.loads(res.data)
 
-      self.assertEqual(res.status_code, 422)
+      self.assertEqual(res.status_code, 404)
       self.assertEqual(data['success'], False)
-      self.assertEqual(data['message'], 'unprocessable')
+      self.assertEqual(data['message'], 'resource not found')
 #------------------------------------------------------------here
     def test_add_a_question(self):
         # create a new question to be deleted
-        question = Question(question=self.new_question['question'], 
-                            answer=self.new_question['answer'],
-                            category=self.new_question['category'], 
-                            difficulty=self.new_question['difficulty']
-                            )
+        question = {
+                    'question':'some question', 
+                    'answer':'some answer',
+                    'category':1, 
+                    'difficulty':4
+                   }       
         total_questions_initially = len(Question.query.all())
         res = self.client().post('/questions', json=question)
         data = json.loads(res.data)
@@ -134,9 +128,9 @@ class UnitTestCase(unittest.TestCase):
         self.assertEqual(data["success"], True)
         self.assertEqual(total_questions_after_adding, total_questions_initially + 1)
 
-    def test_add_question_422(self):
+    def test_add_question_error_422(self):
         question = {
-            'question': 0
+            'question': 'some question'
         }
         res = self.client().post('/questions', json=question)
         data = json.loads(res.data)
@@ -146,7 +140,7 @@ class UnitTestCase(unittest.TestCase):
         self.assertEqual(data["message"], "unprocessable")
 
     def test_search_questions(self):
-        search = {'searchTerm': 'E'}
+        search = {'searchTerm': 'a'}
         res = self.client().post('/questions/search', json=search)
         data = json.loads(res.data)
 
@@ -157,7 +151,7 @@ class UnitTestCase(unittest.TestCase):
 
     def test_search_question_404(self):
         search = {
-            'searchTerm': '~',
+            'searchTerm': '',
         }
         res = self.client().post('/questions/search', json=search)
         data = json.loads(res.data)
@@ -177,7 +171,7 @@ class UnitTestCase(unittest.TestCase):
         self.assertTrue(data['current_category'])
 
     def test_get_questions_by_category_404(self):
-        res = self.client().get('/categories/999999/questions')
+        res = self.client().get('/categories/a/questions')
         data = json.loads(res.data)
 
         self.assertEqual(res.status_code, 404)
@@ -185,8 +179,10 @@ class UnitTestCase(unittest.TestCase):
         self.assertEqual(data["message"], "resource not found")
 
     def test_play_quiz(self):
-        quiz = {'previous_questions': [],
-                          'quiz_category': {'type': 'Science', 'id': 1}}
+        quiz = {
+                'previous_questions': [],
+                'quiz_category': {'type': 'Science', 'id': 1}
+               }
 
         res = self.client().post('/quizzes', json=quiz)
         data = json.loads(res.data)
@@ -194,14 +190,14 @@ class UnitTestCase(unittest.TestCase):
         self.assertEqual(res.status_code, 200)
         self.assertEqual(data['success'], True)
 
-    def test_play_quiz_404(self):
+    def test_play_quiz_400(self):
         quiz = {'previous_questions': []}
         res = self.client().post('/quizzes', json=quiz)
         data = json.loads(res.data)
 
-        self.assertEqual(res.status_code, 422)
+        self.assertEqual(res.status_code, 400)
         self.assertEqual(data["success"], False)
-        self.assertEqual(data["message"], "unprocessable")
+        self.assertEqual(data["message"], "bad request")
 
 
 
