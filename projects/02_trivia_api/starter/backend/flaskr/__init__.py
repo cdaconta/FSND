@@ -239,13 +239,8 @@ def create_app(test_config=None):
     data = request.get_json()
 
     previousQuestions = data.get('previous_questions')
-    quizCategory = data.get('quiz_category')#['id']
-    #category_id = data['quiz_category']['id']
-    print(f'this is quizCategory --- {quizCategory}')
-    
-    #was quizCategory['id']
-    #category_id = data['quiz_category']['id']
-    #print(f'this is quizCategory --- {data["quiz_category"]["id"]}')
+    quizCategory = data.get('quiz_category')
+   
     # abort 400
     if ((quizCategory is None) or (previousQuestions is None)):
           abort(400)
