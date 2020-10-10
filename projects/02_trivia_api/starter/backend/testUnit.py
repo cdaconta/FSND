@@ -99,7 +99,7 @@ class UnitTestCase(unittest.TestCase):
 
         self.assertEqual(res.status_code, 200)
         self.assertEqual(data['success'], True)
-        self.assertEqual(data['deleted'], str(question_id))
+        self.assertEqual(data['deleted'], question_id)
         self.assertTrue(number_of_questions_initially - number_of_questions_after_delete == 1)
         self.assertEqual(question, None)
 #-------------------------------------------------check http 422
