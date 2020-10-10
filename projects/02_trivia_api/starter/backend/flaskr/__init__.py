@@ -174,11 +174,11 @@ def create_app(test_config=None):
   def get_questions_by_category(category_id):
 
       questions = Question.query.filter(Question.category==category_id).all()
-      #Error if no questions exist
-      if len(questions) == 0:
-        abort(404)
-
       questions_paginated = paginate(request, questions)
+
+      #Error if no questions_paginated exist
+      if len(questions_paginated) == 0:
+        abort(404)
 
       return jsonify({
         'success':True,
