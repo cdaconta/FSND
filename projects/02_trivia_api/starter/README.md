@@ -31,7 +31,7 @@ Navigate to the `/backend` directory and run in terminal:
     o	$env:FLASK_APP = "__init__"
     o	$env:FLASK_DEBUG=1
     o	Flask run	
-    
+
 Next navigate to the `/frontend` directory and run:
 •	```bash
 •	Npm install
@@ -179,11 +179,11 @@ DELETE /questions/<int:id>
 •	General:
     o	Deletes a question with a URL parameter.
     o	If successful it will return the id of deleted question.
-•	Example: curl http://localhost:5000/questions/1 -X DELETE
-•	  {
-•	      "deleted": 1, 
-•	      "success": true
-•	  }
+	Example: curl http://localhost:5000/questions/1 -X DELETE
+	  {
+	      "deleted": 1, 
+	      "success": true
+	  }
 
 POST /questions
 •	General:
@@ -191,10 +191,10 @@ POST /questions
     o	Returns JSON object with “success” and the “created” id of item create.
 
 •	Example: curl http://localhost:5000/questions -X POST -H "Content-Type: application/json" -d '{ "question": "What is the capital of New York State?", "answer": "Albany", "difficulty": 2, "category": "3" }'
-•	  {
-•	  "created": 50, 
-•	  "success": true
-•	}
+	  {
+	  "created": 50, 
+	  "success": true
+	}
 
 •	POST /questions/search
 •	General:
@@ -272,3 +272,7 @@ POST /quizzes
  }, 
   "success": true
 }
+
+Authors
+Christian Daconta authored the __init__.py file and the unit test file called testUnit.py.
+All other project files, including the models and frontend, were created by Udacity as a project template for the Full Stack Web Developer Nanodegree.
