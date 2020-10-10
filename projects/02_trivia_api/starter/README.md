@@ -13,6 +13,7 @@ It is recommended to use a virtual environment for the project.  https://packagi
 
 Open two terminals to run the project. 
 •	One for the backend and the other for the front end.
+
 Navigate to the `/backend` directory and run in terminal:
 •	```bash
 •	pip install -r requirements.txt
@@ -27,9 +28,10 @@ Navigate to the `/backend` directory and run in terminal:
 •	Setting the `FLASK_ENV` variable to `development` will detect file changes and restart the server automatically.
 •	Setting the `FLASK_APP` variable to `flaskr` directs flask to use the `flaskr` directory and the `__init__.py` file to find the application.
 •	On Windows 10 in the flaskr folder with PowerShell:
-o	$env:FLASK_APP = "__init__"
-o	$env:FLASK_DEBUG=1
-o	Flask run	
+    o	$env:FLASK_APP = "__init__"
+    o	$env:FLASK_DEBUG=1
+    o	Flask run	
+    
 Next navigate to the `/frontend` directory and run:
 •	```bash
 •	Npm install
