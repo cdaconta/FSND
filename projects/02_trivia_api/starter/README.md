@@ -1,4 +1,4 @@
-This project is a simple trivia game.  On the landing page you a presented with basic navigation menus both horizontally and vertically, vertically are the categories to filter by as well as a search box to look for a particular question.  The horizontal menu consists of List, Add, and Play.  List triggers the landing page with the menus and all the questions in the database.  Add allows the user to submit a question, answer, a difficulty rating, as well as the category to the database.  Finally the Play tab in the menu goes to a quiz section that allow you to choose a category where a random question from that category will be presented.
+This project is a simple trivia game.  On the landing page you are presented with basic navigation menus both horizontally and vertically, vertically are the categories to filter by as well as a search box to look for a particular question.  The horizontal menu consists of List, Add, and Play.  List triggers the landing page with the menus and all the questions in the database.  Add allows the user to submit a question, answer, a difficulty rating, as well as the category to the database.  Finally the Play tab in the menu goes to a quiz section that allow you to choose a category where a random question from that category will be presented.
 
 Getting Started
 
@@ -45,6 +45,15 @@ Open [http://localhost:3000](http://localhost:3000) to view it in the browser. T
 ```bash
 npm start
 ```
+Testing
+
+To run the tests, run
+dropdb trivia_unit_test
+createdb trivia_unit_test
+psql trivia_unit_test < trivia.psql
+Navigate to the `/backend` directory and run in terminal:
+python testUnit.py
+
 API Reference
 
 Getting Started
