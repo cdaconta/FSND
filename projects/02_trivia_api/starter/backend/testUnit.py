@@ -51,7 +51,7 @@ class UnitTestCase(unittest.TestCase):
         self.assertEqual(res.status_code, 404)
         self.assertEqual(data['success'], False)
         self.assertEqual(data['message'], 'resource not found')
-#----------------------------------------------------------------start here---------
+
     def test_get_categories(self):
         """Tests Get Categories"""
         res = self.client().get('/categories')
@@ -102,7 +102,7 @@ class UnitTestCase(unittest.TestCase):
         self.assertEqual(data['deleted'], question_id)
         self.assertTrue(number_of_questions_initially - number_of_questions_after_delete == 1)
         self.assertEqual(question, None)
-#-------------------------------------------------check http 422
+
     def test_deleting_non_existing_question_error_404(self):
       res = self.client().delete('/question/a')
       data = json.loads(res.data)
@@ -110,7 +110,7 @@ class UnitTestCase(unittest.TestCase):
       self.assertEqual(res.status_code, 404)
       self.assertEqual(data['success'], False)
       self.assertEqual(data['message'], 'resource not found')
-#------------------------------------------------------------here
+
     def test_add_a_question(self):
         # create a new question to be deleted
         question = {
