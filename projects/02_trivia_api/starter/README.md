@@ -283,5 +283,6 @@ POST /quizzes
 }
 
 Authors
+
 Christian Daconta authored the __init__.py file and the unit test file called testUnit.py.
 All the other project files were created by Udacity as a project template for the Full Stack Web Developer Nanodegree.
