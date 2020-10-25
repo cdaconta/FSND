@@ -16,7 +16,7 @@ CORS(app)
 !! NOTE THIS WILL DROP ALL RECORDS AND START YOUR DB FROM SCRATCH
 !! NOTE THIS MUST BE UNCOMMENTED ON FIRST RUN
 '''
-# db_drop_and_create_all()
+#db_drop_and_create_all()
 
 ## ROUTES
 '''
@@ -27,8 +27,17 @@ CORS(app)
     returns status code 200 and json {"success": True, "drinks": drinks} where drinks is the list of drinks
         or appropriate status code indicating reason for failure
 '''
+@app.route('/drinks')
+def get_drinks():
+    all_drinks = Drink.query.all()
+    drink_list = []
+    for item in all_drinks:
+        all_drinks.append(item.short())
 
-
+    return jsonify({
+        'success':True,
+        'drinks': drink_list,
+    })
 '''
 @TODO implement endpoint
     GET /drinks-detail
@@ -97,7 +106,13 @@ def unprocessable(error):
                     }), 404
 
 '''
-
+@app.errorhandler(404)
+def resource_not_found(error):
+        return jsonify({
+            "success": False,
+            "error": 404,
+            "message": "resource not found"
+        }), 404
 '''
 @TODO implement error handler for 404
     error handler should conform to general task above 
@@ -108,3 +123,10 @@ def unprocessable(error):
 @TODO implement error handler for AuthError
     error handler should conform to general task above 
 '''
+@app.errorhandler(AuthError)
+def resource_not_found(error):
+        return jsonify({
+            "success": False,
+            "error": AuthError,
+            "message": "Authentication Error"
+        }), AuthError
