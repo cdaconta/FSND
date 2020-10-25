@@ -103,5 +103,11 @@ class Drink(db.Model):
     def update(self):
         db.session.commit()
 
+    def rollback(self):
+        db.session.rollback()
+    
+    def close_session():
+        db.session.close()
+
     def __repr__(self):
         return json.dumps(self.short())
