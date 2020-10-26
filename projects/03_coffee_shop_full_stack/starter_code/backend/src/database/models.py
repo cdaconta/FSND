@@ -106,7 +106,7 @@ class Drink(db.Model):
     def rollback(self):
         db.session.rollback()
     
-    def close_session():
+    def close_session(self):
         db.session.close()
 
     def __repr__(self):

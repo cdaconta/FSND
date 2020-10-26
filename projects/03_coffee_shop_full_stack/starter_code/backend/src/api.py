@@ -35,7 +35,7 @@ def get_drinks():
         drink_list = []
         for item in all_drinks:
             all_drinks.append(item.short())
-
+        print(f'This is all-drinks {all_drinks}')
         return jsonify({
             'success':True,
             'drinks': drink_list,
@@ -52,7 +52,7 @@ def get_drinks():
 '''
 @app.route('/drinks-detail')
 @requires_auth('get:drinks-detail')
-def get_drinks_detail():
+def get_drinks_detail(token):
     try:
         all_drinks = Drink.query.all()
         drink_list = []
@@ -77,30 +77,32 @@ def get_drinks_detail():
 '''
 @app.route('/drinks', methods = ['POST'])
 @requires_auth('post:drinks')
-def create_drink():
+def create_drink(token):
     
     data = request.get_json()
-    drink_id = data.get('id')
     drink_title = data.get('title')
     drink_recipe = data.get('recipe')
 
     drink_obj = Drink(
-            id = drink_id,
             title = drink_title,
-            recipe = drink_recipe
+            recipe = json.dumps(drink_recipe)
+            #recipe = drink_recipe
         )
     try:
         drink_obj.insert()
+        
+        return jsonify({
+                'success':True,
+                'drinks': [drink_obj.long()],
+            }), 200
+
     except:
         drink_obj.rollback()
         abort(422)
     finally:
         drink_obj.close_session()
 
-    return jsonify({
-                'success':True,
-                'drinks': [drink_obj.long()],
-            }), 200
+    
     
 '''
 @TODO implement endpoint
@@ -115,7 +117,7 @@ def create_drink():
 '''
 @app.route('/drinks/<int:id>', methods = ['PATCH'])
 @requires_auth('patch:drinks')
-def patch_drinks(id):
+def patch_drinks(token, id):
     drink = Drink.query.filter(Drink.id == id).one_or_none()
     if drink is None:
         abort(404)
@@ -147,14 +149,17 @@ def patch_drinks(id):
 '''
 @app.route('/drinks/<int:id>', methods = ['DELETE'])
 @requires_auth('delete:drinks')
-def delete_drinks(id):
+def delete_drinks(token, id):
    
     drink = Drink.query.filter(Drink.id == id).one_or_none()
     if drink is None:
         abort(404)
 
     drink.delete()
-   
+    return jsonify({
+                'success':True,
+                'delete': id,
+            }), 200
 
 ## Error Handling
 '''
@@ -199,6 +204,6 @@ def resource_not_found(error):
 def resource_not_found(error):
         return jsonify({
             "success": False,
-            "error": AuthError,
+            "error": error.message,
             "message": "Authentication Error"
         }), AuthError
