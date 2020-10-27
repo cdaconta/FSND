@@ -204,5 +204,5 @@ def authentification_failed(AuthError):
     return jsonify({
         "success": False,
         "error": AuthError.status_code,
-        "message": get_error_message(AuthError.error, "authentification fails")
+        "message": AuthError.error
                     }), 401
