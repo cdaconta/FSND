@@ -32,15 +32,13 @@ CORS(app)
 def get_drinks():
     try:
         all_drinks = Drink.query.all()
-        drink_list = []
-        for item in all_drinks:
-            all_drinks.append(item.short())
-        print(f'This is all-drinks {all_drinks}')
+       
         return jsonify({
             'success':True,
-            'drinks': drink_list,
+            'drinks': [drink.short() for drink in all_drinks]
         }), 200
-    except:
+    except BaseException as e:
+        print(e)
         abort(404)
 '''
 @TODO implement endpoint
@@ -55,15 +53,13 @@ def get_drinks():
 def get_drinks_detail(token):
     try:
         all_drinks = Drink.query.all()
-        drink_list = []
-        for item in all_drinks:
-            all_drinks.append(item.long())
-
+      
         return jsonify({
             'success':True,
-            'drinks': drink_list,
+            'drinks': [drink.long() for drink in all_drinks]
         }), 200
-    except:
+    except BaseException as e:
+        print(e)
         abort(404)
 
 '''
@@ -96,7 +92,8 @@ def create_drink(token):
                 'drinks': [drink_obj.long()],
             }), 200
 
-    except:
+    except BaseException as e:
+        print(e)
         drink_obj.rollback()
         abort(422)
     finally:
@@ -118,9 +115,10 @@ def create_drink(token):
 @app.route('/drinks/<int:id>', methods = ['PATCH'])
 @requires_auth('patch:drinks')
 def patch_drinks(token, id):
+    
     drink = Drink.query.filter(Drink.id == id).one_or_none()
     if drink is None:
-        abort(404)
+            abort(404)
 
     drink_details = drink.long()
     
@@ -200,10 +198,11 @@ def resource_not_found(error):
 @TODO implement error handler for AuthError
     error handler should conform to general task above 
 '''
+
 @app.errorhandler(AuthError)
-def resource_not_found(error):
-        return jsonify({
-            "success": False,
-            "error": error.message,
-            "message": "Authentication Error"
-        }), AuthError
+def authentification_failed(AuthError):
+    return jsonify({
+        "success": False,
+        "error": AuthError.status_code,
+        "message": get_error_message(AuthError.error, "authentification fails")
+                    }), 401
