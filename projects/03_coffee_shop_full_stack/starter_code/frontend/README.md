@@ -2,7 +2,7 @@
 
 ## Getting Setup
 
-> _tip_: this frontend is designed to work with [Flask-based Backend](../backend). It is recommended you stand up the backend first, test using Postman, and then the frontend should integrate smoothly.
+> _tip_: this frontend is designed to work with [Flask-based Backend](../backend). It is recommended you stand up the backend first.
 
 ### Installing Dependencies
 
@@ -24,13 +24,6 @@ npm install
 
 >_tip_: **npm i** is shorthand for **npm install**
 
-## Required Tasks
-
-### Configure Enviornment Variables
-
-Ionic uses a configuration file to manage environment variables. These variables ship with the transpiled software and should not include secrets.
-
-- Open `./src/environments/environments.ts` and ensure each variable reflects the system you stood up for the backend.
 
 ## Running Your Frontend in Dev Mode
 
