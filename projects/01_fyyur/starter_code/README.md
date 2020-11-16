@@ -15,8 +15,9 @@ This is a fully functioning site after you insert some data into a PostgreSQL da
 * learning more about a specific artist or venue.
 
 Here is a sample insert into the Artist Table:
+```
 INSERT INTO artist (name, genres, city, state, phone, website, facebook_link, seeking_venue, seeking_description, image_link) VALUES ('Guns N Petals', '{"Rock n Roll"}', 'San Fransisco', 'CA', '326-123-5000', 'https://www.gunsnpetalsband.com', 'https://www.facebook.com/GunsNPetals', True, 'Looking for shows to perform at in the San Francisco Bay Area!','https://images.unsplash.com/photo-1549213783-8284d0336c4f?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=300&q=80');
-
+```
 
 ### Tech Stack
 
