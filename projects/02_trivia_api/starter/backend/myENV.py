@@ -1,4 +1,4 @@
 import os
 
 os.environ['USER'] = 'postgres'
-os.environ['PASSWORD'] = 'Opensaysme69'
+os.environ['PASSWORD'] = 'YourPassword'
