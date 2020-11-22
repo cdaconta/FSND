@@ -6,6 +6,7 @@ import os
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_moment import Moment
+from sqlalchemy.orm import backref
 
 # ---------------------------------------------------------
 # App Config.
@@ -51,8 +52,9 @@ class Fighter(db.Model):
     win = db.Column(db.Integer)
     loss = db.Column(db.Integer)
     draw = db.Column(db.Integer)
-    division = db.Column(db.Integer)
+    division = db.Column(db.Integer, db.ForeignKey('fighters.id'))
     rank = db.Column(db.Integer)
+    events = db.relationship('Event', backref = 'fighter', lazy='select', cascade='all, delete-orphan')
 
     def __repr__(self):
         return f"<Fighter id='{self.id}' first_name='{self.first_name}' last_name='{self.last_name}' age='{self.age}'\
@@ -120,7 +122,9 @@ class Division(db.Model):
     women_flyweight = db.Column(db.Integer)
     women_bantamweight = db.Column(db.Integer)
     women_featherweight = db.Column(db.Integer)
-
+    fighters = db.relationship('Fighter', backref='division', lazy='select', cascade='all, delete-orphan')
+    events = db.relationship('Event', backref = 'division', lazy='select', cascade='all, delete-orphan')
+    
     def __repr__(self):
         return f"<Division id='{self.id}' men_flyweight='{self.men_flyweight}' men_bantamweight='{self.men_bantamweight}' men_featherweight='{self.men_featherweight}'\
             men_lightweight='{self.men_lightweight}' men_welterweight='{self.men_welterweight}' men_middleweight='{self.men_middleweight}' men_lightheavyweight='{self.men_lightheavyweight}' men_heavyweight='{self.men_heavyweight}' \
@@ -176,9 +180,9 @@ class Event(db.Model):
     event_name = db.Column(db.String)
     event_date = db.Column(db.DateTime) 
     location = db.Column(db.String)
-    division = db.Column(db.Integer)
-    fighter_1 = db.Column(db.Integer)
-    fighter_2 = db.Column(db.Integer)
+    division = db.Column(db.Integer, db.ForeignKey('divisions.id'))
+    fighter_1 = db.Column(db.Integer, db.ForeignKey('fighters.id'))
+    fighter_2 = db.Column(db.Integer, db.ForeignKey('fighters.id'))
     fighter_1_votes = db.Column(db.Integer, default = 0)
     fighter_2_votes = db.Column(db.Integer, default = 0)
 
