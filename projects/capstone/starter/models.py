@@ -16,13 +16,13 @@ from flask_migrate import Migrate
 # App Config.
 # ---------------------------------------------------------
 
-database_path = os.environ.get('DATABASE_URL')
-if not database_path:
-    database_name = "ufcfan"
-    database_path = "postgres://{}/{}".format('localhost:5432', database_name)
+app = Flask(__name__)
+moment = Moment(app)
+app.config.from_object('config')
+db = SQLAlchemy(app)
 
-db = SQLAlchemy()
-moment = Moment()
+#connects to a local postgresql database
+migrate = Migrate(app, db)
 
 
 # Set-up database-related Flask modules.
